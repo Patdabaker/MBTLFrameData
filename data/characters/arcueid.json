@@ -1,0 +1,39 @@
+{
+  "name": "Arcueid Brunestud",
+  "moves": [
+    {
+      "name": "5A",
+      "input": "5A",
+      "damage": "180",
+      "guard": "LH",
+      "cancel": "SE, N, SP, CH, EX, MD, (J)",
+      "move_property": "",
+      "cost": "",
+      "attribute": "",
+      "startup": "5",
+      "active": "2",
+      "recovery": "12",
+      "overall": "18",
+      "advantage": "-2",
+      "invulnerability": "",
+      "notes": "5 frame jab"
+    },
+    {
+      "name": "5B",
+      "input": "5B",
+      "damage": "480",
+      "guard": "LH",
+      "cancel": "N, SP, CH, EX, MD, (J)",
+      "move_property": "",
+      "cost": "",
+      "attribute": "",
+      "startup": "9",
+      "active": "4",
+      "recovery": "17",
+      "overall": "29",
+      "advantage": "-6",
+      "invulnerability": "",
+      "notes": "Advancing blockstring tool"
+    }
+  ]
+}

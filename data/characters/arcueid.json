@@ -34,6 +34,57 @@
       "advantage": "-6",
       "invulnerability": "",
       "notes": "Advancing blockstring tool"
+    },
+    {
+      "name": "5[B]",
+      "input": "5[B]",
+      "damage": "750",
+      "guard": "H",
+      "cancel": "N, SP, CH, EX, MD, (J)",
+      "move_property": "",
+      "cost": "",
+      "attribute": "",
+      "startup": "29",
+      "active": "4",
+      "recovery": "24",
+      "overall": "56",
+      "advantage": "-11",
+      "invulnerability": "Clash 16-28",
+      "notes": "Advancing blockstring tool"
+    },
+    {
+      "name": "5C",
+      "input": "5C",
+      "damage": "610",
+      "guard": "LH",
+      "cancel": "N, SP, CH, EX, MD, (J)",
+      "move_property": "",
+      "cost": "",
+      "attribute": "",
+      "startup": "10",
+      "active": "4",
+      "recovery": "20",
+      "overall": "33",
+      "advantage": "-7",
+      "invulnerability": "",
+      "notes": "Advancing blockstring tool"
+    },
+    {
+      "name": "5[C]",
+      "input": "5[C]",
+      "damage": "2000",
+      "guard": "U",
+      "cancel": "",
+      "move_property": "",
+      "cost": "",
+      "attribute": "",
+      "startup": "35",
+      "active": "4",
+      "recovery": "29",
+      "overall": "67",
+      "advantage": "+15~+33\n+21",
+      "invulnerability": "Clash 20-34",
+      "notes": "Advancing blockstring tool"
     }
   ]
 }

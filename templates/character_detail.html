@@ -8,6 +8,7 @@
 <div>
     <h1 style="text-align: center">{{ character.name }} - Move List</h1>
     <table border="1">
+        {% for move in character.moves %}
         <tr>
             <th>Name</th>
             <th>Input</th>
@@ -25,7 +26,6 @@
             <th>Invulnerability</th>
             <th>Notes</th>
         </tr>
-        {% for move in character.moves %}
         <tr>
             <td>{{ move.name }}</td>
             <td>{{ move.input }}</td>

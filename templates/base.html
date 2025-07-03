@@ -8,6 +8,11 @@
     {% block head %}{% endblock %}
 </head>
 <body>
+<div class="top-nav">
+    {% if request.path != '/' %}
+        <a href="{{ url_for('index') }}">Home</a>
+    {% endif %}
+</div>
     {% block body %}{% endblock %}
 </body>
 </html>

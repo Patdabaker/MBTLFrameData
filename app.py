@@ -1,5 +1,5 @@
 from flask import Flask, render_template, redirect, url_for, request, flash
-from flask_login import UserMixin, LoginManager, login_user, login_required, logout_user
+from flask_login import UserMixin, LoginManager, login_user, login_required, logout_user, current_user
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import generate_password_hash, check_password_hash
 
@@ -46,6 +46,17 @@ class User(db.Model, UserMixin):
 
     def check_password(self, password):
         return check_password_hash(self.password_hash, password)
+
+class MatchupNotes(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    my_character_id = db.Column(db.Integer, db.ForeignKey('character.id'), nullable=False)
+    opponent_character_id = db.Column(db.Integer, db.ForeignKey('character.id'), nullable=False)
+    content = db.Column(db.Text, nullable=False)
+
+    my_character = db.relationship('Character', foreign_keys=[my_character_id])
+    opponent_character = db.relationship('Character', foreign_keys=[opponent_character_id])
+
 @app.route('/')
 def index():
     return render_template('index.html')
@@ -95,6 +106,51 @@ def login():
 def logout():
     logout_user()
     return redirect(url_for('index'))
+
+@app.route('/matchup_notes', methods=['GET', 'POST'])
+@login_required
+def matchup_notes():
+    characters = Character.query.all()
+
+    if request.method == 'POST':
+        my_id = request.form['my_character_id']
+        opp_id = request.form['opponent_character_id']
+        content = request.form['content']
+
+        new_note = MatchupNotes(
+            user_id=current_user.id,
+            my_character_id=my_id,
+            opponent_character_id=opp_id,
+            content=content,
+        )
+        db.session.add(new_note)
+        db.session.commit()
+        flash('New matchup note added!')
+
+        return redirect(url_for('matchup_notes', my=my_id, opp=opp_id))
+
+    my_id = request.args.get('my', type=int)
+    opp_id = request.args.get('opp', type=int)
+
+    matchup_notes = []
+    if my_id and opp_id:
+        matchup_notes = MatchupNotes.query.filter_by(
+            user_id=current_user.id,
+            my_character_id=my_id,
+            opponent_character_id=opp_id
+        ).all()
+
+    all_notes = MatchupNotes.query.filter_by(user_id=current_user.id).all()
+
+    return render_template(
+        'matchup_notes.html',
+        characters=characters,
+        content=None,
+        my_id=my_id,
+        opp_id=opp_id,
+        all_notes=all_notes,
+        matchup_notes=matchup_notes
+    )
 
 if __name__ == '__main__':
     app.run(debug=True)

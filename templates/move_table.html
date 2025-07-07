@@ -1,0 +1,52 @@
+<table border="1">
+    <tr>
+        <th>Name</th>
+        <th>Input</th>
+        <th>Damage</th>
+        <th>Guard</th>
+        <th>Cancel</th>
+        <th>Property</th>
+        <th>Cost</th>
+        <th>Attribute</th>
+        <th>Startup</th>
+        <th>Active</th>
+        <th>Recovery</th>
+        <th>Overall</th>
+        <th>Frame Advantage</th>
+        <th>Invulnerability</th>
+        <th>Frame Notes</th>
+        {% if request.endpoint == 'matchup_notes' %}
+        <th>Matchup Notes vs {{ opponent_name }}</th>
+        {% endif %}
+    </tr>
+
+    {% for move in character.moves %}
+    <tr>
+        <td>{{ move.name }}</td>
+        <td>{{ move.input }}</td>
+        <td>{{ move.damage }}</td>
+        <td>{{ move.guard }}</td>
+        <td>{{ move.cancel }}</td>
+        <td>{{ move.move_property }}</td>
+        <td>{{ move.cost }}</td>
+        <td>{{ move.attribute }}</td>
+        <td>{{ move.startup }}</td>
+        <td>{{ move.active }}</td>
+        <td>{{ move.recovery }}</td>
+        <td>{{ move.overall }}</td>
+        <td>{{ move.advantage }}</td>
+        <td>{{ move.invulnerability }}</td>
+        <td>{{ move.notes }}</td>
+        {% if request.endpoint == 'matchup_notes' %}
+        <td>
+            <form method="POST" action="{{ url_for('save_move_note') }}">
+                <textarea name="content" rows="2" cols="30" placeholder="Your matchup note...">PLACEHOLDER</textarea>
+                <input type="hidden" name="move_id" value="{{ move.id }}">
+                <input type="hidden" name="opponent_character_id" value="{{ opp_id }}">
+                <button type="submit">Save</button>
+            </form>
+        </td>
+        {% endif %}
+    </tr>
+    {% endfor %}
+</table>

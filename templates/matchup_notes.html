@@ -48,6 +48,9 @@
           <li>{{ n.content }}</li>
         {% endfor %}
       </ul>
+    {% if character %}
+        {% include 'move_table.html' %}
+    {% endif %}
     {% else %}
       <p>No notes for this matchup yet.</p>
     {% endif %}

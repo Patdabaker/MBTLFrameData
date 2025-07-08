@@ -141,10 +141,14 @@ def matchup_notes():
         ).all()
 
     all_notes = MatchupNotes.query.filter_by(user_id=current_user.id).all()
+    my_char = Character.query.get(my_id) if my_id else None
+    opp_char = Character.query.get(opp_id) if opp_id else None
 
     return render_template(
         'matchup_notes.html',
         characters=characters,
+        my_char=my_char,
+        opp_char=opp_char,
         content=None,
         my_id=my_id,
         opp_id=opp_id,

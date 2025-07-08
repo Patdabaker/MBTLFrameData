@@ -48,7 +48,12 @@
           <li>{{ n.content }}</li>
         {% endfor %}
       </ul>
-    {% if character %}
+    {% if my_char and opp_char %}
+    <h2>My Char</h2>
+        {% set character=my_char %}
+        {% include 'move_table.html' %}
+    <h2>Opp Char</h2>
+        {% set character=opp_char %}
         {% include 'move_table.html' %}
     {% endif %}
     {% else %}

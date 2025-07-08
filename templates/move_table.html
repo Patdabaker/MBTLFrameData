@@ -1,3 +1,4 @@
+{% for move in character.moves %}
 <table border="1">
     <tr>
         <th>Name</th>
@@ -20,7 +21,6 @@
         {% endif %}
     </tr>
 
-    {% for move in character.moves %}
     <tr>
         <td>{{ move.name }}</td>
         <td>{{ move.input }}</td>

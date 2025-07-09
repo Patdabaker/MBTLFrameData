@@ -57,6 +57,13 @@ class MatchupNotes(db.Model):
     my_character = db.relationship('Character', foreign_keys=[my_character_id])
     opponent_character = db.relationship('Character', foreign_keys=[opponent_character_id])
 
+class MoveMatchupNote(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    move_id = db.Column(db.Integer, db.ForeignKey('move.id'), nullable=False)
+    opponent_character_id = db.Column(db.Integer, db.ForeignKey('character.id'), nullable=False)
+    content = db.Column(db.Text)
+
 @app.route('/')
 def index():
     return render_template('index.html')
@@ -155,6 +162,35 @@ def matchup_notes():
         all_notes=all_notes,
         matchup_notes=matchup_notes
     )
+
+@app.route('/save_move_note', methods=['POST'])
+@login_required
+def save_move_note():
+    move_id = request.form['move_id']
+    opponent_id = request.form['opponent_character_id']
+    content = request.form['content']
+
+    note = MoveMatchupNote.query.filter_by(
+        user_id=current_user.id,
+        move_id=move_id,
+        opponent_character_id=opponent_id
+    ).first()
+
+    if note:
+        note.content = content
+    else:
+        note = MoveMatchupNote(
+            user_id=current_user.id,
+            move_id=move_id,
+            opponent_character_id=opponent_id,
+            content=content
+        )
+        db.session.add(note)
+
+    db.session.commit()
+    flash("Move note saved.")
+    return redirect(request.referrer or url_for('matchup_notes'))
+
 
 if __name__ == '__main__':
     app.run(debug=True)

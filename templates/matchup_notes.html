@@ -49,12 +49,21 @@
         {% endfor %}
       </ul>
     {% if my_char and opp_char %}
-    <h2>My Char</h2>
-        {% set character=my_char %}
-        {% include 'move_table.html' %}
-    <h2>Opp Char</h2>
-        {% set character=opp_char %}
-        {% include 'move_table.html' %}
+        {% set character = my_char %}
+        <h2>My Character: {{ character.name }}</h2>
+        <button onclick="toggleTable('{{ character.id }}', true)">Show All</button>
+        <button onclick="toggleTable('{{ character.id }}', false)">Hide All</button>
+        <div id="move-table-{{ character.id }}" style="display: none;">
+            {% include 'move_table.html' %}
+        </div>
+
+        {% set character = opp_char %}
+        <h2>Opponent Character: {{ character.name }}</h2>
+        <button onclick="toggleTable('{{ character.id }}', true)">Show All</button>
+        <button onclick="toggleTable('{{ character.id }}', false)">Hide All</button>
+        <div id="move-table-{{ character.id }}" style="display: none;">
+            {% include 'move_table.html' %}
+        </div>
     {% endif %}
     {% else %}
       <p>No notes for this matchup yet.</p>

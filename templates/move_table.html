@@ -1,4 +1,5 @@
 {% for move in character.moves %}
+<div data-move-id="{{ move.id }}">
 <table border="1">
     <tr>
         <th>Name</th>
@@ -48,5 +49,6 @@
         </td>
         {% endif %}
     </tr>
-    {% endfor %}
 </table>
+</div>
+{% endfor %}

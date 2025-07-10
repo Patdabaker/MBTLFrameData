@@ -32,8 +32,56 @@
         if (tableDiv) {
             tableDiv.style.display = show ? 'block' : 'none';
         }
+
+        // Clear the Tom Select dropdown filter
+        const select = document.getElementById('move-filter-' + characterId);
+        if (select && select.tomselect) {
+            select.tomselect.clear(true);  // Clears selected values
+        }
+
+        // Also reset all move divs to show/hide based on action
+        tableDiv.querySelectorAll('div[data-move-id]').forEach(div => {
+            div.style.display = show ? 'block' : 'none';
+        });
     }
     </script>
+    <script>
+    function filterMoves(characterId) {
+        const select = document.getElementById(`move-filter-${characterId}`);
+        const selected = Array.from(select.selectedOptions).map(opt => opt.value);
 
+        const tableDiv = document.getElementById(`move-table-${characterId}`);
+        tableDiv.style.display = 'block';  // Make sure table shows up
+
+        tableDiv.querySelectorAll(`div[data-move-id]`).forEach(div => {
+            div.style.display = selected.includes(div.dataset.moveId) ? 'block' : 'none';
+        });
+    }
+        document.addEventListener('DOMContentLoaded', function () {
+            document.querySelectorAll('select[id^="move-filter-"]').forEach(select => {
+                const charId = select.id.replace('move-filter-', '');
+                new TomSelect(select, {
+                    plugins: ['remove_button'],
+                    onChange: () => filterMoves(charId)
+                });
+            });
+        });
+    </script>
+    <script>
+        function resetFilter(characterId) {
+            const select = document.getElementById(`move-filter-${characterId}`);
+            if (select && select.tomselect) {
+                // Clear selected values in Tom Select
+                select.tomselect.clear(true);
+            }
+
+            // Hide all move rows for this character
+            const moveRows = document.querySelectorAll(`#move-table-${characterId} div[data-move-id]`);
+            moveRows.forEach(div => div.style.display = 'none');
+        }
+    </script>
+<!-- Tom Select CSS and JS -->
+<link href="https://cdn.jsdelivr.net/npm/tom-select@2.2.2/dist/css/tom-select.css" rel="stylesheet" />
+<script src="https://cdn.jsdelivr.net/npm/tom-select@2.2.2/dist/js/tom-select.complete.min.js"></script>
 </body>
 </html>

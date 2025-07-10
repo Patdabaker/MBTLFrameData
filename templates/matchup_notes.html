@@ -53,6 +53,13 @@
         <h2>My Character: {{ character.name }}</h2>
         <button onclick="toggleTable('{{ character.id }}', true)">Show All</button>
         <button onclick="toggleTable('{{ character.id }}', false)">Hide All</button>
+        <button type="button" onclick="resetFilter('{{ character.id }}')">Reset Filter</button>
+        <label for="move-filter-{{ character.id }}">Filter Moves:</label>
+        <select id="move-filter-{{ character.id }}" multiple>
+            {% for move in character.moves %}
+                <option value="{{ move.id }}">{{ move.name }}</option>
+            {% endfor %}
+        </select>
         <div id="move-table-{{ character.id }}" style="display: none;">
             {% include 'move_table.html' %}
         </div>
@@ -61,6 +68,13 @@
         <h2>Opponent Character: {{ character.name }}</h2>
         <button onclick="toggleTable('{{ character.id }}', true)">Show All</button>
         <button onclick="toggleTable('{{ character.id }}', false)">Hide All</button>
+        <button type="button" onclick="resetFilter('{{ character.id }}')">Reset Filter</button>
+        <label for="move-filter-{{ character.id }}">Filter Moves:</label>
+        <select id="move-filter-{{ character.id }}" multiple>
+            {% for move in character.moves %}
+                <option value="{{ move.id }}">{{ move.name }}</option>
+            {% endfor %}
+        </select>
         <div id="move-table-{{ character.id }}" style="display: none;">
             {% include 'move_table.html' %}
         </div>

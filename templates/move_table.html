@@ -18,7 +18,7 @@
         <th>Invulnerability</th>
         <th>Frame Notes</th>
         {% if request.endpoint == 'matchup_notes' %}
-        <th>Matchup Notes vs {{ opponent_name }}</th>
+        <th>Matchup Notes</th>
         {% endif %}
     </tr>
 
@@ -40,8 +40,27 @@
         <td>{{ move.notes }}</td>
         {% if request.endpoint == 'matchup_notes' %}
         <td>
-            <form method="POST" action="{{ url_for('save_move_note') }}">
-                <textarea name="content" rows="2" cols="30" placeholder="Your matchup note...">PLACEHOLDER</textarea>
+            <!-- Display existing note -->
+            <div id="note-display-{{ move.id }}">
+                {% if move_notes.get(move.id) %}
+                    <ul>
+                        {% for line in move_notes.get(move.id).splitlines() if line.strip() %}
+                            <li>{{ line }}</li>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <p><em>No notes yet.</em></p>
+                {% endif %}
+            </div>
+            <!-- Button to toggle form -->
+            <button type="button" onclick="toggleNoteForm({{ move.id }})">
+                {{ 'Edit Note' if move_notes.get(move.id) else 'Add Note' }}
+            </button>
+            <!-- Hidden form to create/edit note -->
+            <form id="note-form-{{ move.id }}" method="POST" action="{{ url_for('save_move_note') }}" style="display: none; margin-top: 5px;">
+                <textarea name="content" rows="2" cols="30" placeholder="Enter your note...">
+                    {{ move_notes.get(move.id, '') }}
+                </textarea>
                 <input type="hidden" name="move_id" value="{{ move.id }}">
                 <input type="hidden" name="opponent_character_id" value="{{ opp_id }}">
                 <button type="submit">Save</button>

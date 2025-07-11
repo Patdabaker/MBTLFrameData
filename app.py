@@ -151,6 +151,14 @@ def matchup_notes():
     my_char = Character.query.get(my_id) if my_id else None
     opp_char = Character.query.get(opp_id) if opp_id else None
 
+    move_notes = {
+        note.move_id: note.content
+        for note in MoveMatchupNote.query.filter_by(
+            user_id=current_user.id,
+            opponent_character_id=opp_id
+        ).all()
+    }
+
     return render_template(
         'matchup_notes.html',
         characters=characters,
@@ -160,7 +168,8 @@ def matchup_notes():
         my_id=my_id,
         opp_id=opp_id,
         all_notes=all_notes,
-        matchup_notes=matchup_notes
+        matchup_notes=matchup_notes,
+        move_notes=move_notes,
     )
 
 @app.route('/save_move_note', methods=['POST'])

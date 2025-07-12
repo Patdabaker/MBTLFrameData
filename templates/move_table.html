@@ -1,3 +1,4 @@
+<div data-character-id="{{ character.id }}">
 {% for move in character.moves %}
 <div data-move-id="{{ move.id }}">
 <table border="1">
@@ -58,9 +59,9 @@
             </button>
             <!-- Hidden form to create/edit note -->
             <form id="note-form-{{ move.id }}" method="POST" action="{{ url_for('save_move_note') }}" style="display: none; margin-top: 5px;">
-                <textarea name="content" rows="2" cols="30" placeholder="Enter your note...">
-                    {{ move_notes.get(move.id, '') }}
-                </textarea>
+                {% set note = move_notes.get(move.id, '') %}
+                {% set count = note.splitlines() | length %}
+                <textarea name="content" rows="{{ count if count > 2 else 2 }}" cols="30" placeholder="Enter your note...">{{ move_notes.get(move.id, '').strip() }}</textarea>
                 <input type="hidden" name="move_id" value="{{ move.id }}">
                 <input type="hidden" name="opponent_character_id" value="{{ opp_id }}">
                 <button type="submit">Save</button>
@@ -71,3 +72,4 @@
 </table>
 </div>
 {% endfor %}
+</div>

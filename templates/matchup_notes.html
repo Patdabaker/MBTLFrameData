@@ -53,6 +53,7 @@
         <h2>My Character: {{ character.name }}</h2>
         <button onclick="toggleTable('{{ character.id }}', true)">Show All</button>
         <button onclick="toggleTable('{{ character.id }}', false)">Hide All</button>
+        <button onclick="showMovesWithNotes('{{ character.id }}')">Show Moves With Notes</button>
         <button type="button" onclick="resetFilter('{{ character.id }}')">Reset Filter</button>
         <label for="move-filter-{{ character.id }}">Filter Moves:</label>
         <select id="move-filter-{{ character.id }}" multiple>
@@ -68,6 +69,7 @@
         <h2>Opponent Character: {{ character.name }}</h2>
         <button onclick="toggleTable('{{ character.id }}', true)">Show All</button>
         <button onclick="toggleTable('{{ character.id }}', false)">Hide All</button>
+        <button onclick="showMovesWithNotes('{{ character.id }}')">Show Moves With Notes</button>
         <button type="button" onclick="resetFilter('{{ character.id }}')">Reset Filter</button>
         <label for="move-filter-{{ character.id }}">Filter Moves:</label>
         <select id="move-filter-{{ character.id }}" multiple>

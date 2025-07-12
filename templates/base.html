@@ -90,6 +90,60 @@
         }
     }
     </script>
+    <script>
+        function toggleNoteForm(moveId) {
+            const form = document.getElementById(`note-form-${moveId}`);
+            if (form.style.display === 'none' || form.style.display === '') {
+                form.style.display = 'block';
+
+                const textarea = form.querySelector('textarea');
+                if (textarea) {
+                    textarea.style.height = 'auto';
+                    textarea.style.height = textarea.scrollHeight + 'px';
+                    textarea.focus();
+                }
+            } else {
+                form.style.display = 'none';
+            }
+        }
+        document.addEventListener('DOMContentLoaded', function () {
+            const textareas = document.querySelectorAll('textarea');
+
+            textareas.forEach(function (textarea) {
+                const resize = () => {
+                    textarea.style.height = 'auto'; // Reset height
+                    textarea.style.height = textarea.scrollHeight + 'px'; // Set to scroll height
+                };
+
+                // Initial resize
+                resize();
+
+                // Resize on input
+                textarea.addEventListener('input', resize);
+            });
+        });
+    </script>
+    <script>
+        function showMovesWithNotes(characterId) {
+            const wrapper = document.querySelector(`#move-table-${characterId} [data-character-id='${characterId}']`);
+            if (!wrapper) return;
+
+            wrapper.querySelectorAll('[data-move-id]').forEach(div => {
+                const moveId = div.getAttribute('data-move-id');
+                const noteDisplay = document.getElementById(`note-display-${moveId}`);
+                const hasNote = noteDisplay && noteDisplay.querySelector('li');
+                div.style.display = hasNote ? 'block' : 'none';
+            });
+
+            // Ensure the whole move table is visible
+            const tableDiv = document.getElementById(`move-table-${characterId}`);
+            if (tableDiv) {
+                tableDiv.style.display = 'block';
+            }
+        }
+    </script>
+
+
 
 <!-- Tom Select CSS and JS -->
 <link href="https://cdn.jsdelivr.net/npm/tom-select@2.2.2/dist/css/tom-select.css" rel="stylesheet" />

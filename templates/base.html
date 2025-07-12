@@ -51,7 +51,15 @@
         // Make sure table is visible
         tableDiv.style.display = 'block';
 
+        // Clear the Tom Select dropdown filter
+        const select = document.getElementById('move-filter-' + characterId);
+        if (select && select.tomselect) {
+            select.tomselect.clear(true);  // Clears selected values
+        }
+
         const moveDivs = tableDiv.querySelectorAll('div[data-move-id]');
+
+        resetToggleButtons(characterId, buttonElement);
 
         const state = buttonElement.getAttribute('data-state');
         const show = state === 'hidden'; // If it's hidden, we want to show all
@@ -70,6 +78,8 @@
 
         const tableDiv = document.getElementById(`move-table-${characterId}`);
         tableDiv.style.display = 'block';  // Make sure table shows up
+
+        resetToggleButtons(characterId);
 
         tableDiv.querySelectorAll(`div[data-move-id]`).forEach(div => {
             div.style.display = selected.includes(div.dataset.moveId) ? 'block' : 'none';
@@ -90,6 +100,8 @@
                 // Clear selected values in Tom Select
                 select.tomselect.clear(true);
             }
+
+            resetToggleButtons(characterId);
 
             // Hide all move rows for this character
             const moveRows = document.querySelectorAll(`#move-table-${characterId} div[data-move-id]`);
@@ -156,40 +168,86 @@
             // Hide the form
             form.style.display = 'none';
         }
-        function showMovesWithNotes(characterId) {
+        // 🔁 Toggle showing/hiding moves WITH notes
+        function toggleMovesWithNotes(characterId, buttonElement) {
             const wrapper = document.querySelector(`#move-table-${characterId} [data-character-id='${characterId}']`);
+            const tableDiv = document.getElementById(`move-table-${characterId}`);
             if (!wrapper) return;
 
-            wrapper.querySelectorAll('[data-move-id]').forEach(div => {
+            // ✅ Always show the table before logic runs
+            tableDiv.style.display = 'block';
+
+            // Clear the Tom Select dropdown filter
+            const select = document.getElementById('move-filter-' + characterId);
+            if (select && select.tomselect) {
+                select.tomselect.clear(true);  // Clears selected values
+            }
+
+            const moveDivs = wrapper.querySelectorAll('[data-move-id]');
+
+            resetToggleButtons(characterId, buttonElement);
+
+            const show = buttonElement.getAttribute('data-state') === 'hidden';
+
+            moveDivs.forEach(div => {
                 const moveId = div.getAttribute('data-move-id');
                 const noteDisplay = document.getElementById(`note-display-${moveId}`);
                 const hasNote = noteDisplay && noteDisplay.querySelector('li');
-                div.style.display = hasNote ? 'block' : 'none';
+                div.style.display = hasNote && show ? 'block' : 'none';
             });
 
-            // Ensure the whole move table is visible
-            const tableDiv = document.getElementById(`move-table-${characterId}`);
-            if (tableDiv) {
-                tableDiv.style.display = 'block';
-            }
+            // Update button label and state
+            buttonElement.textContent = show ? 'Hide Moves With Notes' : 'Show Moves With Notes';
+            buttonElement.setAttribute('data-state', show ? 'shown' : 'hidden');
         }
-        function showMovesWithoutNotes(characterId) {
+
+        // 🔁 Toggle showing/hiding moves WITHOUT notes
+        function toggleMovesWithoutNotes(characterId, buttonElement) {
             const wrapper = document.querySelector(`#move-table-${characterId} [data-character-id='${characterId}']`);
+            const tableDiv = document.getElementById(`move-table-${characterId}`);
             if (!wrapper) return;
 
-            wrapper.querySelectorAll('[data-move-id]').forEach(div => {
+            // ✅ Always show the table before logic runs
+            tableDiv.style.display = 'block';
+
+            // Clear the Tom Select dropdown filter
+            const select = document.getElementById('move-filter-' + characterId);
+            if (select && select.tomselect) {
+                select.tomselect.clear(true);  // Clears selected values
+            }
+
+            const moveDivs = wrapper.querySelectorAll('[data-move-id]');
+
+            resetToggleButtons(characterId, buttonElement);
+
+            const show = buttonElement.getAttribute('data-state') === 'hidden';
+
+            moveDivs.forEach(div => {
                 const moveId = div.getAttribute('data-move-id');
                 const noteDisplay = document.getElementById(`note-display-${moveId}`);
                 const hasNote = noteDisplay && noteDisplay.querySelector('li');
-                div.style.display = hasNote ? 'none' : 'block';
+                div.style.display = !hasNote && show ? 'block' : 'none';
             });
 
-            // Ensure the whole move table is visible
-            const tableDiv = document.getElementById(`move-table-${characterId}`);
-            if (tableDiv) {
-                tableDiv.style.display = 'block';
-            }
+            // Update button label and state
+            buttonElement.textContent = show ? 'Hide Moves Without Notes' : 'Show Moves Without Notes';
+            buttonElement.setAttribute('data-state', show ? 'shown' : 'hidden');
         }
+    function resetToggleButtons(characterId, exceptButton = null) {
+            const buttons = document.querySelectorAll(
+                `button[data-state][onclick*="'${characterId}'"]`
+            );
+
+            buttons.forEach(btn => {
+                if (btn !== exceptButton) {
+                    if (btn.textContent.includes('Hide')) {
+                        btn.textContent = btn.textContent.replace('Hide', 'Show');
+                    }
+                    btn.setAttribute('data-state', 'hidden');
+                }
+            });
+        }
+
     </script>
 
 

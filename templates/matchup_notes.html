@@ -44,16 +44,16 @@
       <hr>
       <h2>Notes for {{ my_id }} vs {{ opp_id }}</h2>
       <ul>
-        {% for n in matchup_notes %}
-          <li>{{ n.content }}</li>
+        {% for line in matchup_notes %}
+          <li>{{ line.content }}</li>
         {% endfor %}
       </ul>
     {% if my_char and opp_char %}
         {% set character = my_char %}
         <h2>My Character: {{ character.name }}</h2>
-        <button onclick="toggleTable('{{ character.id }}', true)">Show All</button>
-        <button onclick="toggleTable('{{ character.id }}', false)">Hide All</button>
+        <button onclick="toggleVisibility('{{ character.id }}', this)" data-state="hidden">Show All</button>
         <button onclick="showMovesWithNotes('{{ character.id }}')">Show Moves With Notes</button>
+        <button onclick="showMovesWithoutNotes('{{ character.id }}')">Show Moves Without Notes</button>
         <button type="button" onclick="resetFilter('{{ character.id }}')">Reset Filter</button>
         <label for="move-filter-{{ character.id }}">Filter Moves:</label>
         <select id="move-filter-{{ character.id }}" multiple>
@@ -67,9 +67,9 @@
 
         {% set character = opp_char %}
         <h2>Opponent Character: {{ character.name }}</h2>
-        <button onclick="toggleTable('{{ character.id }}', true)">Show All</button>
-        <button onclick="toggleTable('{{ character.id }}', false)">Hide All</button>
+        <button onclick="toggleVisibility('{{ character.id }}', this)" data-state="hidden">Show All</button>
         <button onclick="showMovesWithNotes('{{ character.id }}')">Show Moves With Notes</button>
+        <button onclick="showMovesWithoutNotes('{{ character.id }}')">Show Moves Without Notes</button>
         <button type="button" onclick="resetFilter('{{ character.id }}')">Reset Filter</button>
         <label for="move-filter-{{ character.id }}">Filter Moves:</label>
         <select id="move-filter-{{ character.id }}" multiple>

@@ -44,8 +44,26 @@
             div.style.display = show ? 'block' : 'none';
         });
     }
-    </script>
-    <script>
+    function toggleVisibility(characterId, buttonElement) {
+        const tableDiv = document.getElementById('move-table-' + characterId);
+        if (!tableDiv) return;
+
+        // Make sure table is visible
+        tableDiv.style.display = 'block';
+
+        const moveDivs = tableDiv.querySelectorAll('div[data-move-id]');
+
+        const state = buttonElement.getAttribute('data-state');
+        const show = state === 'hidden'; // If it's hidden, we want to show all
+
+        moveDivs.forEach(div => {
+            div.style.display = show ? 'block' : 'none';
+        });
+
+        // Update button label and state
+        buttonElement.textContent = show ? 'Hide All' : 'Show All';
+        buttonElement.setAttribute('data-state', show ? 'shown' : 'hidden');
+    }
     function filterMoves(characterId) {
         const select = document.getElementById(`move-filter-${characterId}`);
         const selected = Array.from(select.selectedOptions).map(opt => opt.value);
@@ -66,8 +84,6 @@
                 });
             });
         });
-    </script>
-    <script>
         function resetFilter(characterId) {
             const select = document.getElementById(`move-filter-${characterId}`);
             if (select && select.tomselect) {
@@ -79,18 +95,20 @@
             const moveRows = document.querySelectorAll(`#move-table-${characterId} div[data-move-id]`);
             moveRows.forEach(div => div.style.display = 'none');
         }
-    </script>
-    <script>
-    function toggleNoteForm(moveId) {
-        const form = document.getElementById(`note-form-${moveId}`);
-        if (form.style.display === 'none') {
-            form.style.display = 'block';
-        } else {
-            form.style.display = 'none';
+        function toggleMatchupNoteForm(show) {
+          const form = document.getElementById('matchup-note-form');
+          const display = document.getElementById('matchup-note-display');
+          form.style.display = show ? 'block' : 'none';
+          display.style.display = show ? 'none' : 'block';
+
+          if (show) {
+            const textarea = document.getElementById('matchup-note-textarea');
+            if (textarea) {
+              resizeTextarea(textarea);
+              textarea.focus();
+            }
+          }
         }
-    }
-    </script>
-    <script>
         function toggleNoteForm(moveId) {
             const form = document.getElementById(`note-form-${moveId}`);
             if (form.style.display === 'none' || form.style.display === '') {
@@ -122,8 +140,22 @@
                 textarea.addEventListener('input', resize);
             });
         });
-    </script>
-    <script>
+        function cancelMoveNoteForm(moveId) {
+            const form = document.getElementById(`note-form-${moveId}`);
+            const textarea = form.querySelector('textarea');
+
+            // Restore original content
+            if (textarea && textarea.dataset.original !== undefined) {
+                textarea.value = textarea.dataset.original;
+
+                // Resize after restoring content
+                textarea.style.height = 'auto';
+                textarea.style.height = textarea.scrollHeight + 'px';
+            }
+
+            // Hide the form
+            form.style.display = 'none';
+        }
         function showMovesWithNotes(characterId) {
             const wrapper = document.querySelector(`#move-table-${characterId} [data-character-id='${characterId}']`);
             if (!wrapper) return;
@@ -133,6 +165,23 @@
                 const noteDisplay = document.getElementById(`note-display-${moveId}`);
                 const hasNote = noteDisplay && noteDisplay.querySelector('li');
                 div.style.display = hasNote ? 'block' : 'none';
+            });
+
+            // Ensure the whole move table is visible
+            const tableDiv = document.getElementById(`move-table-${characterId}`);
+            if (tableDiv) {
+                tableDiv.style.display = 'block';
+            }
+        }
+        function showMovesWithoutNotes(characterId) {
+            const wrapper = document.querySelector(`#move-table-${characterId} [data-character-id='${characterId}']`);
+            if (!wrapper) return;
+
+            wrapper.querySelectorAll('[data-move-id]').forEach(div => {
+                const moveId = div.getAttribute('data-move-id');
+                const noteDisplay = document.getElementById(`note-display-${moveId}`);
+                const hasNote = noteDisplay && noteDisplay.querySelector('li');
+                div.style.display = hasNote ? 'none' : 'block';
             });
 
             // Ensure the whole move table is visible

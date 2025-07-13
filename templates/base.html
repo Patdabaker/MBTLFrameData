@@ -93,6 +93,28 @@
                     onChange: () => filterMoves(charId)
                 });
             });
+            // Get all character IDs from your page (assuming each table has id 'move-table-{characterId}')
+            document.querySelectorAll('[id^="move-table-"]').forEach(tableDiv => {
+                const characterId = tableDiv.id.replace('move-table-', '');
+
+                const visibleMoves = JSON.parse(localStorage.getItem(`visibleMoves-${characterId}`));
+                const tableVisible = localStorage.getItem(`tableVisible-${characterId}`);
+
+                // Restore table visibility
+                if (tableVisible) {
+                    tableDiv.style.display = tableVisible;
+                }
+
+                // Restore moves visibility
+                const moveDivs = tableDiv.querySelectorAll('div[data-move-id]');
+                moveDivs.forEach(div => {
+                    if (visibleMoves && visibleMoves.includes(div.dataset.moveId)) {
+                        div.style.display = 'block';
+                    } else {
+                        div.style.display = 'none';
+                    }
+                });
+            });
         });
         function resetFilter(characterId) {
             const select = document.getElementById(`move-filter-${characterId}`);
@@ -121,9 +143,14 @@
             }
           }
         }
-        function toggleNoteForm(moveId) {
+    function toggleNoteForm(moveId) {
             const form = document.getElementById(`note-form-${moveId}`);
-            if (form.style.display === 'none' || form.style.display === '') {
+            const button = document.getElementById(`toggle-button-${moveId}`);
+
+            const isHidden = form.style.display === 'none' || form.style.display === '';
+
+            if (isHidden) {
+                // Show form
                 form.style.display = 'block';
 
                 const textarea = form.querySelector('textarea');
@@ -132,42 +159,27 @@
                     textarea.style.height = textarea.scrollHeight + 'px';
                     textarea.focus();
                 }
+
+                // Change button to Cancel
+                button.textContent = 'Cancel';
             } else {
+                // Hide form and restore original value
+                const textarea = form.querySelector('textarea');
+                if (textarea && textarea.dataset.original !== undefined) {
+                    textarea.value = textarea.dataset.original;
+                    textarea.style.height = 'auto';
+                    textarea.style.height = textarea.scrollHeight + 'px';
+                }
+
                 form.style.display = 'none';
+
+                // Restore button label
+                button.textContent = textarea && textarea.value.trim()
+                    ? 'Edit Note'
+                    : 'Add Note';
             }
         }
-        document.addEventListener('DOMContentLoaded', function () {
-            const textareas = document.querySelectorAll('textarea');
 
-            textareas.forEach(function (textarea) {
-                const resize = () => {
-                    textarea.style.height = 'auto'; // Reset height
-                    textarea.style.height = textarea.scrollHeight + 'px'; // Set to scroll height
-                };
-
-                // Initial resize
-                resize();
-
-                // Resize on input
-                textarea.addEventListener('input', resize);
-            });
-        });
-        function cancelMoveNoteForm(moveId) {
-            const form = document.getElementById(`note-form-${moveId}`);
-            const textarea = form.querySelector('textarea');
-
-            // Restore original content
-            if (textarea && textarea.dataset.original !== undefined) {
-                textarea.value = textarea.dataset.original;
-
-                // Resize after restoring content
-                textarea.style.height = 'auto';
-                textarea.style.height = textarea.scrollHeight + 'px';
-            }
-
-            // Hide the form
-            form.style.display = 'none';
-        }
         // 🔁 Toggle showing/hiding moves WITH notes
         function toggleMovesWithNotes(characterId, buttonElement) {
             const wrapper = document.querySelector(`#move-table-${characterId} [data-character-id='${characterId}']`);
@@ -247,7 +259,26 @@
                 }
             });
         }
+        function saveUIState(characterId) {
+            const tableDiv = document.getElementById('move-table-' + characterId);
+            const moveDivs = tableDiv.querySelectorAll('div[data-move-id]');
 
+            // Save which moves are visible (by moveId)
+            const visibleMoves = [];
+            moveDivs.forEach(div => {
+                if (div.style.display !== 'none') {
+                    visibleMoves.push(div.dataset.moveId);
+                }
+            });
+
+            // Save visible moves array under a key
+            localStorage.setItem(`visibleMoves-${characterId}`, JSON.stringify(visibleMoves));
+
+            // Save the visibility of the entire table (block or none)
+            localStorage.setItem(`tableVisible-${characterId}`, tableDiv.style.display);
+
+            // Save any other relevant UI state here (e.g. filters, buttons states)
+        }
     </script>
 
 

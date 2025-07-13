@@ -53,20 +53,23 @@
                     <p><em>No notes yet.</em></p>
                 {% endif %}
             </div>
+            <div style="display: flex; gap: 8px; margin-top: 8px; align-items: center;">
+                <!-- Hidden form to create/edit note -->
+                <form id="note-form-{{ move.id }}" method="POST" action="{{ url_for('save_move_note') }}" style="display: none; margin-top: 5px;" onsubmit="saveUIState('{{ character.id }}')">
+                    {% set note = move_notes.get(move.id, '') %}
+                    {% set count = note.splitlines() | length %}
+                    <textarea name="content" rows="{{ count if count > 2 else 2 }}" cols="30" placeholder="Enter your note..." data-original="{{ move_notes.get(move.id, '').strip() }}">{{ move_notes.get(move.id, '').strip() }}</textarea>
+                    <input type="hidden" name="move_id" value="{{ move.id }}">
+                    <input type="hidden" name="opponent_character_id" value="{{ opp_id }}">
+                    <div style="margin-top: 5px;">
+                        <button type="submit">Save</button>
+                    </div>
+                </form>
+            </div>
             <!-- Button to toggle form -->
-            <button type="button" onclick="toggleNoteForm({{ move.id }})">
+            <button type="button" id="toggle-button-{{ move.id }}" onclick="toggleNoteForm({{ move.id }})">
                 {{ 'Edit Note' if move_notes.get(move.id) else 'Add Note' }}
             </button>
-            <!-- Hidden form to create/edit note -->
-            <form id="note-form-{{ move.id }}" method="POST" action="{{ url_for('save_move_note') }}" style="display: none; margin-top: 5px;">
-                {% set note = move_notes.get(move.id, '') %}
-                {% set count = note.splitlines() | length %}
-                <textarea name="content" rows="{{ count if count > 2 else 2 }}" cols="30" placeholder="Enter your note..." data-original="{{ move_notes.get(move.id, '').strip() }}">{{ move_notes.get(move.id, '').strip() }}</textarea>
-                <input type="hidden" name="move_id" value="{{ move.id }}">
-                <input type="hidden" name="opponent_character_id" value="{{ opp_id }}">
-                <button type="button" onclick="cancelMoveNoteForm({{ move.id }})">Cancel</button>
-                <button type="submit">Save</button>
-            </form>
         </td>
         {% endif %}
     </tr>

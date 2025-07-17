@@ -70,6 +70,13 @@
             <button type="button" id="toggle-button-{{ move.id }}" onclick="toggleNoteForm({{ move.id }})">
                 {{ 'Edit Note' if move_notes.get(move.id) else 'Add Note' }}
             </button>
+            <form method="POST" action="{{ url_for('delete_note') }}" onsubmit="return confirm('Delete this note?')">
+                <input type="hidden" name="note_type" value="move">
+                <input type="hidden" name="move_id" value="{{ move.id }}">
+                <input type="hidden" name="my_id" value="{{ my_id }}">
+                <input type="hidden" name="opp_id" value="{{ opp_id }}">
+                <button type="submit">Delete Note</button>
+            </form>
         </td>
         {% endif %}
     </tr>

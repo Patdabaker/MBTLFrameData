@@ -200,6 +200,23 @@ def save_move_note():
     flash("Move note saved.")
     return redirect(request.referrer or url_for('matchup_notes'))
 
+@app.route('/delete_note', methods=['POST'])
+def delete_note():
+    note_type = request.form['note_type'] # move, matchup, or general
+    move_id = request.form['move_id']
+    my_id = request.form['my_id']
+    opp_id = request.form['opp_id']
+
+    if note_type == 'move':
+        MoveMatchupNote.query.filter_by(move_id=move_id, opponent_character_id=opp_id).delete()
+    elif note_type == 'matchup':
+        MatchupNotes.query.filter_by(my_character_id=my_id, opponent_character_id=opp_id).delete()
+    elif note_type == 'general':
+        pass
+
+    db.session.commit()
+    return redirect(request.referrer)
+
 
 if __name__ == '__main__':
     app.run(debug=True)

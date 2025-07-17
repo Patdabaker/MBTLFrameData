@@ -8,25 +8,33 @@
 <h1>Matchup Notes</h1>
 
 <form method="GET" id="characterForm">
+    <!-- My Character -->
     <label for="my_character">My Character:</label>
     <select name="my" onchange="document.getElementById('characterForm').submit()">
-        <option value="" disabled selected>Select your character</option>
-      {% for char in characters %}
-        <option value="{{ char.id }}" {% if char.id == my_id %}selected{% endif %}>
-          {{ char.name }}
-        </option>
-      {% endfor %}
+        <option value="" disabled {% if not my_id %}selected{% endif %}>Select your character</option>
+        {% for char in characters %}
+            {% if char.id != opp_id %}
+                <option value="{{ char.id }}" {% if char.id == my_id %}selected{% endif %}>
+                    {{ char.name }}
+                </option>
+            {% endif %}
+        {% endfor %}
     </select>
-    <label for="opponent_character">Opponent's Character</label>
+
+    <!-- Opponent Character -->
+    <label for="opponent_character">Opponent's Character:</label>
     <select name="opp" onchange="document.getElementById('characterForm').submit()">
-        <option value="" disabled selected>Select opponent character</option>
-      {% for char in characters %}
-        <option value="{{ char.id }}" {% if char.id == opp_id %}selected{% endif %}>
-          {{ char.name }}
-        </option>
-      {% endfor %}
+        <option value="" disabled {% if not opp_id %}selected{% endif %}>Select opponent character</option>
+        {% for char in characters %}
+            {% if char.id != my_id %}
+                <option value="{{ char.id }}" {% if char.id == opp_id %}selected{% endif %}>
+                    {{ char.name }}
+                </option>
+            {% endif %}
+        {% endfor %}
     </select>
 </form>
+
 {% if my_id and opp_id %}
   <form method="POST">
       <br>

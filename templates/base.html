@@ -338,21 +338,37 @@
         const form = document.getElementById('matchup-note-form');
         const button = document.getElementById('toggle-matchup-note-btn');
 
-        if (form.style.display === 'none') {
-            form.style.display = 'block';
-            button.style.display = 'none';  // Hide the Edit/Add Note button
-        } else {
-            form.style.display = 'none';
-            button.style.display = 'inline';  // Show it again if needed
+        const isHidden = form.style.display === 'none' || form.style.display === '';
+
+            if (isHidden) {
+                // Show form
+                form.style.display = 'block';
+
+                const textarea = form.querySelector('textarea');
+                if (textarea) {
+                    textarea.style.height = 'auto';
+                    textarea.style.height = textarea.scrollHeight + 'px';
+                    textarea.focus();
+                }
+
+                // Change button to Cancel
+                button.textContent = 'Cancel';
+            } else {
+                // Hide form and restore original value
+                const textarea = form.querySelector('textarea');
+                if (textarea && textarea.dataset.original !== undefined) {
+                    textarea.value = textarea.dataset.original;
+                    textarea.style.height = 'auto';
+                    textarea.style.height = textarea.scrollHeight + 'px';
+                }
+
+                form.style.display = 'none';
+
+                // Restore button label
+                button.textContent = textarea && textarea.value.trim()
+                    ? 'Edit Matchup Note'
+                    : 'Add Matchup Note';
         }
-    }
-    function cancelMatchupNoteForm() {
-        const form = document.getElementById('matchup-note-form');
-        const display = document.getElementById('matchup-note-display');
-        const textarea = form.querySelector('textarea');
-        textarea.value = textarea.dataset.original;
-        form.style.display = 'none';
-        display.style.display = 'block';
     }
     window.addEventListener('beforeunload', function () {
             document.querySelectorAll('[id^="move-table-"]').forEach(tableDiv => {

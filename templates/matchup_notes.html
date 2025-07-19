@@ -33,29 +33,54 @@
             {% endif %}
         {% endfor %}
     </select>
+    <!-- Development Purposes Reset Button -->
+    <a href="{{ url_for('matchup_notes') }}">Reset</a>
 </form>
 
-{% if my_id and opp_id %}
-  <form method="POST">
-      <br>
-      <textarea name="content" placeholder="Enter your matchup notes here..." required>{{ content or '' }}</textarea>
-      <br>
-      <input type="hidden" name="my_character_id" value="{{ my_id }}">
-      <input type="hidden" name="opponent_character_id" value="{{ opp_id }}">
-      <br>
-      <button type="submit">Save Note</button>
-  </form>
-{% endif %}
-
 <div>
-    {% if matchup_notes %}
-      <hr>
-      <h2>Notes for {{ my_id }} vs {{ opp_id }}</h2>
-      <ul>
-        {% for line in matchup_notes %}
-          <li>{{ line.content }}</li>
-        {% endfor %}
-      </ul>
+    {% if my_id and opp_id %}
+        <div id="matchup-note-section">
+            <!-- Display existing note -->
+            <div id="matchup-note-display">
+                {% if matchup_notes %}
+                    <ul>
+                        {% for note in matchup_notes %}
+                        {% for line in note.content.splitlines() if line.strip() %}
+                            <li>{{ line }}</li>
+                        {% endfor %}
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <p><em>No notes yet.</em></p>
+                {% endif %}
+            </div>
+
+            <!-- Hidden form for editing -->
+            {% set count = (matchup_notes[0].content.splitlines() | length) if matchup_notes else 0 %}
+            <form id="matchup-note-form" method="POST" action="{{ url_for('save_matchup_note') }}" style="display: none;">
+                <textarea name="content" rows="{{ count if count > 4 else 4 }}" cols="50" placeholder="Enter your matchup notes..." data-original="{{ matchup_notes[0].content if matchup_notes else '' }}">{{ matchup_notes[0].content if matchup_notes else '' }}</textarea>
+                <input type="hidden" name="my_character_id" value="{{ my_id }}">
+                <input type="hidden" name="opponent_character_id" value="{{ opp_id }}">
+                <div style="margin-top: 5px;">
+                    <button type="submit">Save</button>
+                    <button type="button" onclick="cancelMatchupNoteForm()">Cancel</button>
+                </div>
+            </form>
+            <!-- Action buttons -->
+            <div style="margin-top: 10px;">
+                <button type="button" id="toggle-matchup-note-btn" onclick="toggleMatchupNoteForm()">
+                    {{ 'Edit Matchup Note' if matchup_notes else 'Add Matchup Note' }}
+                </button>
+                {% if matchup_notes %}
+                <form method="POST" action="{{ url_for('delete_matchup_note') }}" style="display: inline;" onsubmit="return confirm('Delete this note?')">
+                    <input type="hidden" name="my_character_id" value="{{ my_id }}">
+                    <input type="hidden" name="opponent_character_id" value="{{ opp_id }}">
+                    <button type="submit">Delete Note</button>
+                </form>
+                {% endif %}
+            </div>
+        </div>
+    {% endif %}
     {% if my_char and opp_char %}
         {% set character = my_char %}
         <h2>My Character: {{ character.name }}</h2>
@@ -88,9 +113,6 @@
         <div id="move-table-{{ character.id }}" style="display: none;">
             {% include 'move_table.html' %}
         </div>
-    {% endif %}
-    {% else %}
-      <p>No notes for this matchup yet.</p>
     {% endif %}
 </div>
 {% endblock %}

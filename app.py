@@ -61,6 +61,7 @@ class MoveMatchupNote(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     move_id = db.Column(db.Integer, db.ForeignKey('move.id'), nullable=False)
+    my_character_id = db.Column(db.Integer, db.ForeignKey('character.id'), nullable=False)
     opponent_character_id = db.Column(db.Integer, db.ForeignKey('character.id'), nullable=False)
     content = db.Column(db.Text)
 
@@ -155,6 +156,7 @@ def matchup_notes():
         note.move_id: note.content
         for note in MoveMatchupNote.query.filter_by(
             user_id=current_user.id,
+            my_character_id=my_id,
             opponent_character_id=opp_id
         ).all()
     }
@@ -176,12 +178,14 @@ def matchup_notes():
 @login_required
 def save_move_note():
     move_id = request.form['move_id']
+    my_id = request.form['my_character_id']
     opponent_id = request.form['opponent_character_id']
     content = request.form['content']
 
     note = MoveMatchupNote.query.filter_by(
         user_id=current_user.id,
         move_id=move_id,
+        my_character_id=my_id,
         opponent_character_id=opponent_id
     ).first()
 
@@ -191,6 +195,7 @@ def save_move_note():
         note = MoveMatchupNote(
             user_id=current_user.id,
             move_id=move_id,
+            my_character_id=my_id,
             opponent_character_id=opponent_id,
             content=content
         )
@@ -198,6 +203,53 @@ def save_move_note():
 
     db.session.commit()
     flash("Move note saved.")
+    return redirect(request.referrer or url_for('matchup_notes'))
+
+@app.route('/save_matchup_note', methods=['POST'])
+@login_required
+def save_matchup_note():
+    my_id = request.form['my_character_id']
+    opponent_id = request.form['opponent_character_id']
+    content = request.form['content']
+
+    note = MatchupNotes.query.filter_by(
+        user_id=current_user.id,
+        my_character_id=my_id,
+        opponent_character_id=opponent_id
+    ).first()
+
+    if note:
+        note.content = content
+    else:
+        note = MatchupNotes(
+            user_id=current_user.id,
+            my_character_id=my_id,
+            opponent_character_id=opponent_id,
+            content=content
+        )
+        db.session.add(note)
+
+    db.session.commit()
+    flash("Matchup note saved.")
+    return redirect(request.referrer or url_for('matchup_notes'))
+
+
+@app.route('/delete_matchup_note', methods=['POST'])
+@login_required
+def delete_matchup_note():
+    my_id = request.form['my_character_id']
+    opponent_id = request.form['opponent_character_id']
+
+    note = MatchupNotes.query.filter_by(
+        user_id=current_user.id,
+        my_character_id=my_id,
+        opponent_character_id=opponent_id
+    ).first()
+
+    if note:
+        db.session.delete(note)
+        db.session.commit()
+        flash("Matchup note deleted.")
     return redirect(request.referrer or url_for('matchup_notes'))
 
 @app.route('/delete_note', methods=['POST'])
@@ -208,13 +260,30 @@ def delete_note():
     opp_id = request.form['opp_id']
 
     if note_type == 'move':
-        MoveMatchupNote.query.filter_by(move_id=move_id, opponent_character_id=opp_id).delete()
+        MoveMatchupNote.query.filter_by(move_id=move_id, my_character_id=my_id, opponent_character_id=opp_id).delete()
     elif note_type == 'matchup':
         MatchupNotes.query.filter_by(my_character_id=my_id, opponent_character_id=opp_id).delete()
     elif note_type == 'general':
         pass
+    db.session.commit()
+    return redirect(request.referrer)
+
+@app.route('/delete_all_notes', methods=['POST'])
+def delete_all_notes():
+    note_type = request.form['note_type']
+    my_id = request.form.get('my_character_id')
+    opp_id = request.form.get('opp_character_id')
+
+    # Delete all move notes for this matchup
+    if note_type == 'move':
+        MoveMatchupNote.query.filter_by(user_id=current_user.id, my_character_id=my_id, opponent_character_id=opp_id).delete()
+
+    # Delete the general matchup note
+    elif note_type == 'matchup':
+        MatchupNotes.query.filter_by(user_id=current_user.id, my_character_id=my_id, opponent_character_id=opp_id).delete()
 
     db.session.commit()
+    flash('All notes for this matchup have been deleted.')
     return redirect(request.referrer)
 
 

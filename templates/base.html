@@ -334,12 +334,38 @@
                 localStorage.setItem(`filter-move-filter-${characterId}`, JSON.stringify(selectedValues));
             }
         }
+    function toggleMatchupNoteForm() {
+        const form = document.getElementById('matchup-note-form');
+        const button = document.getElementById('toggle-matchup-note-btn');
+
+        if (form.style.display === 'none') {
+            form.style.display = 'block';
+            button.style.display = 'none';  // Hide the Edit/Add Note button
+        } else {
+            form.style.display = 'none';
+            button.style.display = 'inline';  // Show it again if needed
+        }
+    }
+    function cancelMatchupNoteForm() {
+        const form = document.getElementById('matchup-note-form');
+        const display = document.getElementById('matchup-note-display');
+        const textarea = form.querySelector('textarea');
+        textarea.value = textarea.dataset.original;
+        form.style.display = 'none';
+        display.style.display = 'block';
+    }
     window.addEventListener('beforeunload', function () {
             document.querySelectorAll('[id^="move-table-"]').forEach(tableDiv => {
                 const characterId = tableDiv.id.replace('move-table-', '');
                 saveUIState(characterId);
             });
         });
+    document.addEventListener('input', function (e) {
+        if (e.target.tagName.toLowerCase() !== 'textarea') return;
+
+        e.target.style.height = 'auto';  // Reset height
+        e.target.style.height = e.target.scrollHeight + 'px';  // Set new height
+    });
     </script>
 
 

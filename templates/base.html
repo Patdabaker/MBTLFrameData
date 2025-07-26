@@ -370,6 +370,42 @@
                     : 'Add Matchup Note';
         }
     }
+    function toggleGeneralNoteForm() {
+        const form = document.getElementById('general-note-form');
+        const button = document.getElementById('toggle-general-note-btn');
+
+        const isHidden = form.style.display === 'none' || form.style.display === '';
+
+            if (isHidden) {
+                // Show form
+                form.style.display = 'block';
+
+                const textarea = form.querySelector('textarea');
+                if (textarea) {
+                    textarea.style.height = 'auto';
+                    textarea.style.height = textarea.scrollHeight + 'px';
+                    textarea.focus();
+                }
+
+                // Change button to Cancel
+                button.textContent = 'Cancel';
+            } else {
+                // Hide form and restore original value
+                const textarea = form.querySelector('textarea');
+                if (textarea && textarea.dataset.original !== undefined) {
+                    textarea.value = textarea.dataset.original;
+                    textarea.style.height = 'auto';
+                    textarea.style.height = textarea.scrollHeight + 'px';
+                }
+
+                form.style.display = 'none';
+
+                // Restore button label
+                button.textContent = textarea && textarea.value.trim()
+                    ? 'Edit General Note'
+                    : 'Add General Note';
+        }
+    }
     window.addEventListener('beforeunload', function () {
             document.querySelectorAll('[id^="move-table-"]').forEach(tableDiv => {
                 const characterId = tableDiv.id.replace('move-table-', '');

@@ -39,6 +39,42 @@
 
 <div>
     {% if my_id and opp_id %}
+    <h2>General Notes</h2>
+        <div id="general-note-section">
+            <!-- Display existing note -->
+            <div id="general-note-display">
+                {% if general_notes %}
+                    <ul>
+                        {% for line in general_notes.content.splitlines() if line.strip() %}
+                            <li>{{ line }}</li>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <p><em>No notes yet.</em></p>
+                {% endif %}
+            </div>
+
+            <!-- Hidden form for editing -->
+            {% set count = (general_notes.content.splitlines() | length) if general_notes else 0 %}
+            <form id="general-note-form" method="POST" action="{{ url_for('save_general_note') }}" style="display: none;">
+                <textarea name="content" rows="{{ count if count > 4 else 4 }}" cols="50" placeholder="Enter your general notes..." data-original="{{ general_notes.content if general_notes else '' }}">{{ general_notes.content if general_notes else '' }}</textarea>
+                <input type="hidden" name="opponent_character_id" value="{{ opp_id }}">
+                <div style="margin-top: 5px;">
+                    <button type="submit">Save</button>
+                </div>
+            </form>
+            <!-- Action buttons -->
+            <div style="margin-top: 10px;">
+                <button type="button" id="toggle-general-note-btn" onclick="toggleGeneralNoteForm()">
+                    {{ 'Edit General Note' if general_notes else 'Add General Note' }}
+                </button>
+                {% if general_notes %}
+                <form method="POST" action="{{ url_for('delete_general_note') }}" style="display: inline;" onsubmit="return confirm('Delete this note?')">
+                    <input type="hidden" name="opponent_character_id" value="{{ opp_id }}">
+                    <button type="submit">Delete Note</button>
+                </form>
+                {% endif %}
+        <h2>Matchup Notes</h2>
         <div id="matchup-note-section">
             <!-- Display existing note -->
             <div id="matchup-note-display">

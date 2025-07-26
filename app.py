@@ -1,5 +1,6 @@
 from flask import Flask, render_template, redirect, url_for, request, flash
 from flask_login import UserMixin, LoginManager, login_user, login_required, logout_user, current_user
+from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import generate_password_hash, check_password_hash
 
@@ -7,6 +8,7 @@ app = Flask(__name__)
 app.secret_key = 'patdabaker'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///data.db'
 db = SQLAlchemy(app)
+migrate = Migrate(app, db)
 
 login_manager = LoginManager()
 login_manager.login_view = 'login'
@@ -46,6 +48,13 @@ class User(db.Model, UserMixin):
 
     def check_password(self, password):
         return check_password_hash(self.password_hash, password)
+
+class GeneralNotes(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    opponent_character_id = db.Column(db.Integer, db.ForeignKey('character.id'), nullable=False)
+    content = db.Column(db.Text, nullable=False)
+    opponent_character = db.relationship('Character', foreign_keys=[opponent_character_id])
 
 class MatchupNotes(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -115,27 +124,10 @@ def logout():
     logout_user()
     return redirect(url_for('index'))
 
-@app.route('/matchup_notes', methods=['GET', 'POST'])
+@app.route('/matchup_notes', methods=['GET'])
 @login_required
 def matchup_notes():
     characters = Character.query.all()
-
-    if request.method == 'POST':
-        my_id = request.form['my_character_id']
-        opp_id = request.form['opponent_character_id']
-        content = request.form['content']
-
-        new_note = MatchupNotes(
-            user_id=current_user.id,
-            my_character_id=my_id,
-            opponent_character_id=opp_id,
-            content=content,
-        )
-        db.session.add(new_note)
-        db.session.commit()
-        flash('New matchup note added!')
-
-        return redirect(url_for('matchup_notes', my=my_id, opp=opp_id))
 
     my_id = request.args.get('my', type=int)
     opp_id = request.args.get('opp', type=int)
@@ -151,6 +143,11 @@ def matchup_notes():
     all_notes = MatchupNotes.query.filter_by(user_id=current_user.id).all()
     my_char = Character.query.get(my_id) if my_id else None
     opp_char = Character.query.get(opp_id) if opp_id else None
+
+    general_notes = GeneralNotes.query.filter_by(
+        user_id=current_user.id,
+        opponent_character_id=opp_id
+    ).first()
 
     move_notes = {
         note.move_id: note.content
@@ -172,6 +169,7 @@ def matchup_notes():
         all_notes=all_notes,
         matchup_notes=matchup_notes,
         move_notes=move_notes,
+        general_notes=general_notes
     )
 
 @app.route('/save_move_note', methods=['POST'])
@@ -203,6 +201,31 @@ def save_move_note():
 
     db.session.commit()
     flash("Move note saved.")
+    return redirect(request.referrer or url_for('matchup_notes'))
+
+@app.route('/save_general_note', methods=['POST'])
+@login_required
+def save_general_note():
+    opponent_id = request.form['opponent_character_id']
+    content = request.form['content']
+
+    note = GeneralNotes.query.filter_by(
+        user_id=current_user.id,
+        opponent_character_id=opponent_id
+    ).first()
+
+    if note:
+        note.content = content
+    else:
+        note = GeneralNotes(
+            user_id=current_user.id,
+            opponent_character_id=opponent_id,
+            content=content
+        )
+        db.session.add(note)
+
+    db.session.commit()
+    flash("General note saved.")
     return redirect(request.referrer or url_for('matchup_notes'))
 
 @app.route('/save_matchup_note', methods=['POST'])
@@ -252,21 +275,31 @@ def delete_matchup_note():
         flash("Matchup note deleted.")
     return redirect(request.referrer or url_for('matchup_notes'))
 
-@app.route('/delete_note', methods=['POST'])
-def delete_note():
-    note_type = request.form['note_type'] # move, matchup, or general
+@app.route('/delete_move_note', methods=['POST'])
+def delete_move_note():
     move_id = request.form['move_id']
     my_id = request.form['my_id']
     opp_id = request.form['opp_id']
 
-    if note_type == 'move':
-        MoveMatchupNote.query.filter_by(move_id=move_id, my_character_id=my_id, opponent_character_id=opp_id).delete()
-    elif note_type == 'matchup':
-        MatchupNotes.query.filter_by(my_character_id=my_id, opponent_character_id=opp_id).delete()
-    elif note_type == 'general':
-        pass
+    MoveMatchupNote.query.filter_by(move_id=move_id, my_character_id=my_id, opponent_character_id=opp_id).delete()
     db.session.commit()
+    flash("Move note deleted.")
     return redirect(request.referrer)
+
+@app.route('/delete_general_note', methods=['POST'])
+def delete_general_note():
+    opponent_id = request.form['opponent_character_id']
+
+    note = GeneralNotes.query.filter_by(
+        user_id=current_user.id,
+        opponent_character_id=opponent_id
+    ).first()
+
+    if note:
+        db.session.delete(note)
+        db.session.commit()
+        flash("General note deleted.")
+    return redirect(request.referrer or url_for('matchup_notes'))
 
 @app.route('/delete_all_notes', methods=['POST'])
 def delete_all_notes():

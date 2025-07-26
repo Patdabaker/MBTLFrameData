@@ -8,6 +8,13 @@ def dash(move_data):
 def load_character_from_json(path):
     with open(path, 'r') as file:
         data = json.load(file)
+
+        # Check if character already exists
+        existing_character = Character.query.filter_by(name=data['name']).first()
+        if existing_character:
+            print(f"Character '{data['name']}' already exists. Skipping.")
+            return
+
         character = Character(name=data['name'])
         db.session.add(character)
         db.session.flush()
@@ -16,7 +23,6 @@ def load_character_from_json(path):
             db.session.add(move)
 
 with app.app_context():
-    db.drop_all()   # wipeout database
     db.create_all() # create new database
 
     data_dir = "data/characters"

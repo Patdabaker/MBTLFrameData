@@ -39,7 +39,12 @@
 
 <div>
     {% if my_id and opp_id %}
-    <h2>General Notes</h2>
+    <h2>General Notes
+    <span title="These notes will be shown based on the opponent character
+chosen regardless of 'my' character choice.
+Ex. If Shiki is chosen for opponent character, will show on all matchups with Shiki
+as opponent such as Arc vs Shiki and Akiha vs Shiki.">❓</span>
+    </h2>
         <div id="general-note-section">
             <!-- Display existing note -->
             <div id="general-note-display">
@@ -74,7 +79,11 @@
                     <button type="submit">Delete Note</button>
                 </form>
                 {% endif %}
-        <h2>Matchup Notes</h2>
+        <h2>Matchup Notes
+        <span title="These notes will be shown based on the specific matchup.
+Based on both 'my' and opponent characters.
+Will be different for each matchup chosen.">❓</span>
+        </h2>
         <div id="matchup-note-section">
             <!-- Display existing note -->
             <div id="matchup-note-display">

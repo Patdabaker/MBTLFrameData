@@ -1,4 +1,6 @@
-body {
-    margin: 0;
-    font-family: "sans-serif";
+h2 span {
+  cursor: help;
+  margin-left: 8px;
+  font-weight: normal;
+  color: #555;
 }

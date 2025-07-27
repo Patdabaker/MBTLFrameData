@@ -303,20 +303,13 @@ def delete_general_note():
 
 @app.route('/delete_all_notes', methods=['POST'])
 def delete_all_notes():
-    note_type = request.form['note_type']
     my_id = request.form.get('my_character_id')
     opp_id = request.form.get('opp_character_id')
 
-    # Delete all move notes for this matchup
-    if note_type == 'move':
-        MoveMatchupNote.query.filter_by(user_id=current_user.id, my_character_id=my_id, opponent_character_id=opp_id).delete()
-
-    # Delete the general matchup note
-    elif note_type == 'matchup':
-        MatchupNotes.query.filter_by(user_id=current_user.id, my_character_id=my_id, opponent_character_id=opp_id).delete()
+    MoveMatchupNote.query.filter_by(user_id=current_user.id, my_character_id=my_id, opponent_character_id=opp_id).delete()
 
     db.session.commit()
-    flash('All notes for this matchup have been deleted.')
+    flash('All move notes for this matchup have been deleted.')
     return redirect(request.referrer)
 
 

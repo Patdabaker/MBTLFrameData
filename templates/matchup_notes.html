@@ -117,6 +117,14 @@
         </div>
     {% endif %}
     {% if my_char and opp_char %}
+        <br>
+        {% if move_notes %}
+        <form method="POST" action="{{ url_for('delete_all_notes') }}" style="display: inline;" onsubmit="return confirm('Delete ALL notes?')">
+            <input type="hidden" name="my_character_id" value="{{ my_id }}">
+            <input type="hidden" name="opp_character_id" value="{{ opp_id }}">
+            <button type="submit">DELETE ALL MOVE NOTES</button>
+        </form>
+        {% endif %}
         {% set character = my_char %}
         <h2>My Character: {{ character.name }}</h2>
         <button onclick="toggleVisibility('{{ character.id }}', this)" data-state="hidden">Show All</button>

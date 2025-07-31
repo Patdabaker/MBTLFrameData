@@ -24,21 +24,21 @@
     </tr>
 
     <tr>
-        <td>{{ move.name }}</td>
-        <td>{{ move.input }}</td>
-        <td>{{ move.damage }}</td>
-        <td>{{ move.guard }}</td>
-        <td>{{ move.cancel }}</td>
-        <td>{{ move.move_property }}</td>
-        <td>{{ move.cost }}</td>
-        <td>{{ move.attribute }}</td>
-        <td>{{ move.startup }}</td>
-        <td>{{ move.active }}</td>
-        <td>{{ move.recovery }}</td>
-        <td>{{ move.overall }}</td>
-        <td>{{ move.advantage }}</td>
-        <td>{{ move.invulnerability }}</td>
-        <td>{{ move.notes }}</td>
+        <td>{{ move.name|replace('\n', '<br>')|safe }}</td>
+        <td>{{ move.input|replace('\n', '<br>')|safe }}</td>
+        <td>{{ move.damage|replace('\n', '<br>')|safe }}</td>
+        <td>{{ move.guard|replace('\n', '<br>')|safe }}</td>
+        <td>{{ move.cancel|replace('\n', '<br>')|safe }}</td>
+        <td>{{ move.move_property|replace('\n', '<br>')|safe }}</td>
+        <td>{{ move.cost|replace('\n', '<br>')|safe }}</td>
+        <td>{{ move.attribute|replace('\n', '<br>')|safe }}</td>
+        <td>{{ move.startup|replace('\n', '<br>')|safe }}</td>
+        <td>{{ move.active|replace('\n', '<br>')|safe }}</td>
+        <td>{{ move.recovery|replace('\n', '<br>')|safe }}</td>
+        <td>{{ move.overall|replace('\n', '<br>')|safe }}</td>
+        <td>{{ move.advantage|replace('\n', '<br>')|safe }}</td>
+        <td>{{ move.invulnerability|replace('\n', '<br>')|safe }}</td>
+        <td>{{ move.notes|replace('\n', '<br>')|safe }}</td>
         {% if request.endpoint == 'matchup_notes' %}
         <td>
             <!-- Display existing note -->

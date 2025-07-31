@@ -136,6 +136,7 @@ Will be different for each matchup chosen.">❓</span>
         {% endif %}
         {% set character = my_char %}
         <h2>My Character: {{ character.name }}</h2>
+        <p>For more information, go to this character's <a href="https://wiki.gbl.gg/w/Melty_Blood/MBTL/{{ character.name|replace(' ', '_')|safe}}" target="_blank">wiki.</a></p>
         <button onclick="toggleVisibility('{{ character.id }}', this)" data-state="hidden">Show All</button>
         <button onclick="toggleMovesWithNotes('{{ character.id }}', this)" data-state="hidden">Show Moves With Notes</button>
         <button onclick="toggleMovesWithoutNotes('{{ character.id }}',this)" data-state="hidden">Show Moves Without Notes</button>
@@ -152,6 +153,7 @@ Will be different for each matchup chosen.">❓</span>
 
         {% set character = opp_char %}
         <h2>Opponent Character: {{ character.name }}</h2>
+        <p>For more information, go to this character's <a href="https://wiki.gbl.gg/w/Melty_Blood/MBTL/{{ character.name|replace(' ', '_')|safe}}" target="_blank">wiki.</a></p>
         <button onclick="toggleVisibility('{{ character.id }}', this)" data-state="hidden">Show All</button>
         <button onclick="toggleMovesWithNotes('{{ character.id }}', this)" data-state="hidden">Show Moves With Notes</button>
         <button onclick="toggleMovesWithoutNotes('{{ character.id }}', this)" data-state="hidden">Show Moves Without Notes</button>

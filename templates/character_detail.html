@@ -7,6 +7,7 @@
 {% block body %}
 <div>
     <h1 style="text-align: center">{{ character.name }} - Move List</h1>
+    <p>For more information, go to this character's <a href="https://wiki.gbl.gg/w/Melty_Blood/MBTL/{{ character.name|replace(' ', '_')|safe}}" target="_blank">wiki.</a></p>
     {% include 'move_table.html' %}
 
     <p><a href="{{ url_for('character_list') }}">Back to characters</a></p>

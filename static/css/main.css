@@ -4,3 +4,9 @@ h2 span {
   font-weight: normal;
   color: #555;
 }
+html {
+  font-family: sans-serif;
+}
+tr {
+  text-align: center;
+}

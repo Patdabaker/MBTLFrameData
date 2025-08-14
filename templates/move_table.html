@@ -1,7 +1,11 @@
 <div data-character-id="{{ character.id }}">
 {% for move in character.moves %}
 <div data-move-id="{{ move.id }}">
-<table border="1">
+<div class="movedata-container">
+<div class="movedata-flex-image-container">
+</div>
+<div class="movedata-flex-information">
+<table class="wikitable movedata-flex-framedata-table">
     <tr>
         <th>Name</th>
         <th>Input</th>
@@ -11,12 +15,12 @@
         <th>Property</th>
         <th>Cost</th>
         <th>Attribute</th>
-        <th>Startup</th>
+        <th>First Active</th>
         <th>Active</th>
         <th>Recovery</th>
         <th>Overall</th>
-        <th>Frame Advantage</th>
-        <th>Invulnerability</th>
+        <th>Advantage</th>
+        <th>Invul</th>
         <th>Frame Notes</th>
         {% if request.endpoint == 'matchup_notes' %}
         <th>Matchup Notes</th>
@@ -84,5 +88,9 @@
     </tr>
 </table>
 </div>
+</div>
+</div>
 {% endfor %}
 </div>
+
+<!--lines with movedata in it-->

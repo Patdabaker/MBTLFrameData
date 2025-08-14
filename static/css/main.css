@@ -6,7 +6,151 @@ h2 span {
 }
 html {
   font-family: sans-serif;
+  font-size: 80%;
 }
 tr {
   text-align: center;
+  font-size: 80%;
+  height: 29px;
 }
+th {
+  width: 14.25%;
+}
+h1 {
+  text-align: center;
+}
+h2 {
+  text-align: center;
+}
+.char-select {
+  display: flex;
+  justify-content: center;
+}
+.forms {
+  display: flex;
+  justify-content: center;
+}
+.list {
+  display: flex;
+  justify-content: center;
+}
+.matchup-container {
+    display: flex;             /* make children sit side by side */
+    gap: 20px;                  /* space between columns */
+    align-items: flex-start;    /* align tops of columns */
+}
+.my-char-section,
+.opp-char-section {
+    flex: 1;                    /* both take equal width */
+    min-width: 300px;           /* stop from being too skinny */
+    border: 1px solid #ccc;     /* optional: visual separation */
+    padding: 10px;
+    background-color: #f9f9f9;  /* optional: background */
+}
+.movedata-container {
+    border: 1px solid #a2a9b1;
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: flex-start;
+    align-content: stretch;
+    background-color: white;
+}
+.movedata-flex-image-container {
+    display: flex;
+    flex-flow: column;
+    justify-content: center;
+    align-content: flex-start;
+    padding: 3px;
+    text-align: center;
+    line-height: 1.3em;
+    background-color: #eaecf0;
+    border: 1px solid #a2a9b1;
+    flex-basis: 180px;
+    flex-grow: 1;
+    flex-shrink: 1;
+}
+.movedata-flex-information {
+    display: flex;
+    flex-flow: column nowrap;
+    flex-shrink: 0;
+    flex-grow: 1000;
+    flex-basis: 300px;
+    overflow-x: auto;
+}
+.movedata-flex-framedata-table {
+    margin: 0;
+    flex-shrink: 0;
+    flex-grow: 1000;
+    flex-basis: 300px;
+}
+/* Base table styling */
+.wikitable {
+    border: 1px solid #aaa;
+    border-collapse: collapse;
+    background-color: #f9f9f9;
+    color: #000;
+    width: 100%;
+    font-size: 14px;
+}
+
+/* Table headers */
+.wikitable th {
+    background-color: #e6e6e6;
+    text-align: center;
+    font-weight: bold;
+    border: 1px solid #aaa;
+    padding: 4px 6px;
+    width: 14.25%;
+}
+
+/* Table cells */
+.wikitable td {
+    border: 1px solid #aaa;
+    padding: 4px 6px;
+    text-align: center;
+}
+
+/* Zebra striping for rows */
+.wikitable tr:nth-child(even) {
+    background-color: #f2f2f2;
+    text-align: center;
+    font-size: 80%;
+    height: 29px;
+}
+
+/* Frame data specific tweaks */
+.movedata-flex-framedata-table {
+    table-layout: fixed;
+}
+
+/* Matchup notes cell */
+.wikitable td ul {
+    list-style: disc;
+    padding-left: 20px;
+    text-align: left;
+}
+
+.wikitable td p {
+    margin: 0;
+}
+.movedata-flex-framedata {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: flex-start;
+    align-content: stretch;
+}
+.movedata-flex-framedata-name {
+    border: 1px solid #a2a9b1;
+    border-collapse: collapse;
+    display: flex;
+    flex-flow: row-reverse wrap;
+    justify-content: flex-start;
+    align-content: stretch;
+    flex-shrink: 1;
+    flex-grow: 1;
+    text-align: center;
+    flex-basis: 130px;
+    background-color: #eaecf0;
+}
+
+/* line 9, 12 and on *\

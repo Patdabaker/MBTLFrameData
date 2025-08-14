@@ -7,7 +7,7 @@
 {% block body %}
 <h1>Matchup Notes</h1>
 
-<form method="GET" id="characterForm">
+<form method="GET" id="characterForm" class="char-select">
     <!-- My Character -->
     <label for="my_character">My Character:</label>
     <select name="my" onchange="document.getElementById('characterForm').submit()">
@@ -22,7 +22,7 @@
     </select>
 
     <!-- Opponent Character -->
-    <label for="opponent_character">Opponent's Character:</label>
+    <label for="opponent_character" style="padding-left:20px">Opponent's Character:</label>
     <select name="opp" onchange="document.getElementById('characterForm').submit()">
         <option value="" disabled {% if not opp_id %}selected{% endif %}>Select opponent character</option>
         {% for char in characters %}
@@ -47,15 +47,15 @@ as opponent such as Arc vs Shiki and Akiha vs Shiki.">❓</span>
     </h2>
         <div id="general-note-section">
             <!-- Display existing note -->
-            <div id="general-note-display">
+            <div class="list" id="general-note-display">
                 {% if general_notes %}
-                    <ul>
+                    <ul style="align-items:center">
                         {% for line in general_notes.content.splitlines() if line.strip() %}
                             <li>{{ line }}</li>
                         {% endfor %}
                     </ul>
                 {% else %}
-                    <p><em>No notes yet.</em></p>
+                    <p style="align-items:center"><em>No notes yet.</em></p>
                 {% endif %}
             </div>
 
@@ -86,9 +86,9 @@ Will be different for each matchup chosen.">❓</span>
         </h2>
         <div id="matchup-note-section">
             <!-- Display existing note -->
-            <div id="matchup-note-display">
+            <div class="list" id="matchup-note-display">
                 {% if matchup_notes %}
-                    <ul>
+                    <ul style="align-items:center">
                         {% for note in matchup_notes %}
                         {% for line in note.content.splitlines() if line.strip() %}
                             <li>{{ line }}</li>
@@ -96,7 +96,7 @@ Will be different for each matchup chosen.">❓</span>
                         {% endfor %}
                     </ul>
                 {% else %}
-                    <p><em>No notes yet.</em></p>
+                    <p style="align-items:center"><em>No notes yet.</em></p>
                 {% endif %}
             </div>
 
@@ -134,7 +134,9 @@ Will be different for each matchup chosen.">❓</span>
             <button type="submit">DELETE ALL MOVE NOTES</button>
         </form>
         {% endif %}
+        <div class="matchup-container">
         {% set character = my_char %}
+        <div class="my-char-section">
         <h2>My Character: {{ character.name }}</h2>
         <p>For more information, go to this character's <a href="https://wiki.gbl.gg/w/Melty_Blood/MBTL/{{ character.name|replace(' ', '_')|safe}}" target="_blank">wiki.</a></p>
         <button onclick="toggleVisibility('{{ character.id }}', this)" data-state="hidden">Show All</button>
@@ -150,8 +152,9 @@ Will be different for each matchup chosen.">❓</span>
         <div id="move-table-{{ character.id }}" style="display: none;">
             {% include 'move_table.html' %}
         </div>
-
+        </div>
         {% set character = opp_char %}
+        <div class="opp-char-section">
         <h2>Opponent Character: {{ character.name }}</h2>
         <p>For more information, go to this character's <a href="https://wiki.gbl.gg/w/Melty_Blood/MBTL/{{ character.name|replace(' ', '_')|safe}}" target="_blank">wiki.</a></p>
         <button onclick="toggleVisibility('{{ character.id }}', this)" data-state="hidden">Show All</button>
@@ -167,6 +170,10 @@ Will be different for each matchup chosen.">❓</span>
         <div id="move-table-{{ character.id }}" style="display: none;">
             {% include 'move_table.html' %}
         </div>
+        </div>
+        </div>
     {% endif %}
 </div>
 {% endblock %}
+
+            <!--anything with classes in css and styles-->

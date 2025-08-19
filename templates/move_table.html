@@ -2,49 +2,58 @@
 {% for move in character.moves %}
 <div data-move-id="{{ move.id }}">
 <div class="movedata-container">
-<div class="movedata-flex-image-container">
-</div>
-<div class="movedata-flex-information">
-<table class="wikitable movedata-flex-framedata-table">
-    <tr>
-        <th>Name</th>
-        <th>Input</th>
-        <th>Damage</th>
-        <th>Guard</th>
-        <th>Cancel</th>
-        <th>Property</th>
-        <th>Cost</th>
-        <th>Attribute</th>
-        <th>First Active</th>
-        <th>Active</th>
-        <th>Recovery</th>
-        <th>Overall</th>
-        <th>Advantage</th>
-        <th>Invul</th>
-        <th>Frame Notes</th>
+    <div class="movedata-flex-image-container">
+        <div>
+            <div>
+                <big>{{ move.name|replace('\n', '<br>')|safe }}</big>
+            </div>
+            <div>
+                <a href="" class="image" title="{{ move.name|replace('\n', '<br>')|safe }}"></a>
+            </div>
+        </div>
+        <div class="movedata-flex-images">
+        </div>
+    </div>
+    <div class="movedata-flex-information">
+        <div class="movedata-flex-framedata">
+            <table class="wikitable movedata-flex-framedata-table">
+            <tr>
+                <th>Damage</th>
+                <th>Guard</th>
+                <th>Cancel</th>
+                <th>Property</th>
+                <th>Cost</th>
+                <th>Attribute</th>
+            </tr>
+            <tr>
+                <td>{{ move.damage|replace('\n', '<br>')|safe }}</td>
+                <td>{{ move.guard|replace('\n', '<br>')|safe }}</td>
+                <td>{{ move.cancel|replace('\n', '<br>')|safe }}</td>
+                <td>{{ move.move_property|replace('\n', '<br>')|safe }}</td>
+                <td>{{ move.cost|replace('\n', '<br>')|safe }}</td>
+                <td>{{ move.attribute|replace('\n', '<br>')|safe }}</td>
+            </tr>    
+            <tr>    
+                <th>First Active</th>
+                <th>Active</th>
+                <th>Recovery</th>
+                <th>Overall</th>
+                <th>Advantage</th>
+                <th>Invul</th>
+            </tr>
+            <tr>
+                <td>{{ move.startup|replace('\n', '<br>')|safe }}</td>
+                <td>{{ move.active|replace('\n', '<br>')|safe }}</td>
+                <td>{{ move.recovery|replace('\n', '<br>')|safe }}</td>
+                <td>{{ move.overall|replace('\n', '<br>')|safe }}</td>
+                <td>{{ move.advantage|replace('\n', '<br>')|safe }}</td>
+                <td>{{ move.invulnerability|replace('\n', '<br>')|safe }}</td>
+            </tr>
+            </table>
+        </div>
         {% if request.endpoint == 'matchup_notes' %}
-        <th>Matchup Notes</th>
-        {% endif %}
-    </tr>
-
-    <tr>
-        <td>{{ move.name|replace('\n', '<br>')|safe }}</td>
-        <td>{{ move.input|replace('\n', '<br>')|safe }}</td>
-        <td>{{ move.damage|replace('\n', '<br>')|safe }}</td>
-        <td>{{ move.guard|replace('\n', '<br>')|safe }}</td>
-        <td>{{ move.cancel|replace('\n', '<br>')|safe }}</td>
-        <td>{{ move.move_property|replace('\n', '<br>')|safe }}</td>
-        <td>{{ move.cost|replace('\n', '<br>')|safe }}</td>
-        <td>{{ move.attribute|replace('\n', '<br>')|safe }}</td>
-        <td>{{ move.startup|replace('\n', '<br>')|safe }}</td>
-        <td>{{ move.active|replace('\n', '<br>')|safe }}</td>
-        <td>{{ move.recovery|replace('\n', '<br>')|safe }}</td>
-        <td>{{ move.overall|replace('\n', '<br>')|safe }}</td>
-        <td>{{ move.advantage|replace('\n', '<br>')|safe }}</td>
-        <td>{{ move.invulnerability|replace('\n', '<br>')|safe }}</td>
-        <td>{{ move.notes|replace('\n', '<br>')|safe }}</td>
-        {% if request.endpoint == 'matchup_notes' %}
-        <td>
+        <div class="matchup-notes-container">
+            {% if request.endpoint == 'matchup_notes' %}
             <!-- Display existing note -->
             <div id="note-display-{{ move.id }}">
                 {% if move_notes.get(move.id) %}
@@ -83,14 +92,12 @@
                 <button type="submit">Delete Note</button>
                 {% endif %}
             </form>
-        </td>
+            {% endif %}
+        </div>
         {% endif %}
-    </tr>
-</table>
+    </div>
 </div>
-</div>
+<br>
 </div>
 {% endfor %}
 </div>
-
-<!--lines with movedata in it-->

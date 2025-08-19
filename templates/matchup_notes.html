@@ -5,7 +5,7 @@
 {% endblock %}
 
 {% block body %}
-<h1>Matchup Notes</h1>
+<h1>All Notes</h1>
 
 <form method="GET" id="characterForm" class="char-select">
     <!-- My Character -->
@@ -39,89 +39,98 @@
 
 <div>
     {% if my_id and opp_id %}
-    <h2>General Notes
-    <span title="These notes will be shown based on the opponent character
-chosen regardless of 'my' character choice.
-Ex. If Shiki is chosen for opponent character, will show on all matchups with Shiki
-as opponent such as Arc vs Shiki and Akiha vs Shiki.">❓</span>
-    </h2>
-        <div id="general-note-section">
-            <!-- Display existing note -->
-            <div class="list" id="general-note-display">
-                {% if general_notes %}
-                    <ul style="align-items:center">
-                        {% for line in general_notes.content.splitlines() if line.strip() %}
-                            <li>{{ line }}</li>
-                        {% endfor %}
-                    </ul>
-                {% else %}
-                    <p style="align-items:center"><em>No notes yet.</em></p>
-                {% endif %}
-            </div>
-
-            <!-- Hidden form for editing -->
-            {% set count = (general_notes.content.splitlines() | length) if general_notes else 0 %}
-            <form id="general-note-form" method="POST" action="{{ url_for('save_general_note') }}" style="display: none;">
-                <textarea name="content" rows="{{ count if count > 4 else 4 }}" cols="50" placeholder="Enter your general notes..." data-original="{{ general_notes.content if general_notes else '' }}">{{ general_notes.content if general_notes else '' }}</textarea>
-                <input type="hidden" name="opponent_character_id" value="{{ opp_id }}">
-                <div style="margin-top: 5px;">
-                    <button type="submit">Save</button>
-                </div>
-            </form>
-            <!-- Action buttons -->
-            <div style="margin-top: 10px;">
-                <button type="button" id="toggle-general-note-btn" onclick="toggleGeneralNoteForm()">
-                    {{ 'Edit General Note' if general_notes else 'Add General Note' }}
-                </button>
-                {% if general_notes %}
-                <form method="POST" action="{{ url_for('delete_general_note') }}" style="display: inline;" onsubmit="return confirm('Delete this note?')">
-                    <input type="hidden" name="opponent_character_id" value="{{ opp_id }}">
-                    <button type="submit">Delete Note</button>
-                </form>
-                {% endif %}
-        <h2>Matchup Notes
-        <span title="These notes will be shown based on the specific matchup.
-Based on both 'my' and opponent characters.
-Will be different for each matchup chosen.">❓</span>
+    <div class="general-notes">
+        <h2>
+        <span title="These notes will be shown based on the opponent character
+    chosen regardless of 'my' character choice.
+    Ex. If Shiki is chosen for opponent character, will show on all matchups with Shiki
+    as opponent such as Arc vs Shiki and Akiha vs Shiki.">General Notes</span>
         </h2>
-        <div id="matchup-note-section">
-            <!-- Display existing note -->
-            <div class="list" id="matchup-note-display">
-                {% if matchup_notes %}
-                    <ul style="align-items:center">
-                        {% for note in matchup_notes %}
-                        {% for line in note.content.splitlines() if line.strip() %}
-                            <li>{{ line }}</li>
-                        {% endfor %}
-                        {% endfor %}
-                    </ul>
-                {% else %}
-                    <p style="align-items:center"><em>No notes yet.</em></p>
-                {% endif %}
-            </div>
-
-            <!-- Hidden form for editing -->
-            {% set count = (matchup_notes[0].content.splitlines() | length) if matchup_notes else 0 %}
-            <form id="matchup-note-form" method="POST" action="{{ url_for('save_matchup_note') }}" style="display: none;">
-                <textarea name="content" rows="{{ count if count > 4 else 4 }}" cols="50" placeholder="Enter your matchup notes..." data-original="{{ matchup_notes[0].content if matchup_notes else '' }}">{{ matchup_notes[0].content if matchup_notes else '' }}</textarea>
-                <input type="hidden" name="my_character_id" value="{{ my_id }}">
-                <input type="hidden" name="opponent_character_id" value="{{ opp_id }}">
-                <div style="margin-top: 5px;">
-                    <button type="submit">Save</button>
+            <div id="general-note-section">
+                <!-- Display existing note -->
+                <div class="list" id="general-note-display">
+                    {% if general_notes %}
+                        <ul style="align-items:center">
+                            {% for line in general_notes.content.splitlines() if line.strip() %}
+                                <li>{{ line }}</li>
+                            {% endfor %}
+                        </ul>
+                    {% else %}
+                        <p style="align-items:center"><em>No notes yet.</em></p>
+                    {% endif %}
                 </div>
-            </form>
-            <!-- Action buttons -->
-            <div style="margin-top: 10px;">
-                <button type="button" id="toggle-matchup-note-btn" onclick="toggleMatchupNoteForm()">
-                    {{ 'Edit Matchup Note' if matchup_notes else 'Add Matchup Note' }}
-                </button>
-                {% if matchup_notes %}
-                <form method="POST" action="{{ url_for('delete_matchup_note') }}" style="display: inline;" onsubmit="return confirm('Delete this note?')">
-                    <input type="hidden" name="my_character_id" value="{{ my_id }}">
-                    <input type="hidden" name="opponent_character_id" value="{{ opp_id }}">
-                    <button type="submit">Delete Note</button>
-                </form>
-                {% endif %}
+                <div class="general-notes-save" style="margin-top: 10px;">
+                    <!-- Hidden form for editing -->
+                    {% set count = (general_notes.content.splitlines() | length) if general_notes else 0 %}
+                    <form id="general-note-form" method="POST" action="{{ url_for('save_general_note') }}" style="display: none;">
+                        <textarea name="content" rows="{{ count if count > 4 else 4 }}" cols="50" placeholder="Enter your general notes..." data-original="{{ general_notes.content if general_notes else '' }}">{{ general_notes.content if general_notes else '' }}</textarea>
+                        <input type="hidden" name="opponent_character_id" value="{{ opp_id }}">
+                        <div style="margin-top: 5px;">
+                            <button type="submit">Save</button>
+                        </div>
+                    </form>
+                </div> 
+                <div class="general-notes-container">                    
+                    <!-- Action buttons -->
+                    <button type="button" id="toggle-general-note-btn" onclick="toggleGeneralNoteForm()">
+                        {{ 'Edit General Note' if general_notes else 'Add General Note' }}
+                    </button>
+                    {% if general_notes %}
+                    <form method="POST" action="{{ url_for('delete_general_note') }}" onsubmit="return confirm('Delete this note?')">
+                        <input type="hidden" name="opponent_character_id" value="{{ opp_id }}">
+                        <button type="submit">Delete Note</button>
+                    </form>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        <br>
+        <div class="matchup-specific-notes">
+            <h2>
+            <span title="These notes will be shown based on the specific matchup.
+    Based on both 'my' and opponent characters.
+    Will be different for each matchup chosen.">Matchup Notes</span>
+            </h2>
+            <div id="matchup-note-section">
+                <!-- Display existing note -->
+                <div class="list" id="matchup-note-display">
+                    {% if matchup_notes %}
+                        <ul style="align-items:center">
+                            {% for note in matchup_notes %}
+                            {% for line in note.content.splitlines() if line.strip() %}
+                                <li>{{ line }}</li>
+                            {% endfor %}
+                            {% endfor %}
+                        </ul>
+                    {% else %}
+                        <p style="align-items:center"><em>No notes yet.</em></p>
+                    {% endif %}
+                </div>
+                <div class="matchup-specific-notes-save" style="margin-top: 10px;">
+                    <!-- Hidden form for editing -->
+                    {% set count = (matchup_notes[0].content.splitlines() | length) if matchup_notes else 0 %}
+                    <form id="matchup-note-form" method="POST" action="{{ url_for('save_matchup_note') }}" style="display: none;">
+                        <textarea name="content" rows="{{ count if count > 4 else 4 }}" cols="50" placeholder="Enter your matchup notes..." data-original="{{ matchup_notes[0].content if matchup_notes else '' }}">{{ matchup_notes[0].content if matchup_notes else '' }}</textarea>
+                        <input type="hidden" name="my_character_id" value="{{ my_id }}">
+                        <input type="hidden" name="opponent_character_id" value="{{ opp_id }}">
+                        <div style="margin-top: 5px;">
+                            <button type="submit">Save</button>
+                        </div>
+                    </form>
+                </div>
+                <div class="matchup-specific-notes-container">
+                    <!-- Action buttons -->
+                    <button type="button" id="toggle-matchup-note-btn" onclick="toggleMatchupNoteForm()">
+                        {{ 'Edit Matchup Note' if matchup_notes else 'Add Matchup Note' }}
+                    </button>
+                    {% if matchup_notes %}
+                    <form method="POST" action="{{ url_for('delete_matchup_note') }}" onsubmit="return confirm('Delete this note?')">
+                        <input type="hidden" name="my_character_id" value="{{ my_id }}">
+                        <input type="hidden" name="opponent_character_id" value="{{ opp_id }}">
+                        <button type="submit">Delete Note</button>
+                    </form>
+                    {% endif %}
+                </div>
             </div>
         </div>
     {% endif %}
@@ -175,5 +184,3 @@ Will be different for each matchup chosen.">❓</span>
     {% endif %}
 </div>
 {% endblock %}
-
-            <!--anything with classes in css and styles-->

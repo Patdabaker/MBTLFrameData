@@ -6,17 +6,17 @@
       "input": "5A",
       "damage": "180",
       "guard": "L",
-      "cancel": "-SE-, -N-, -SP-, -RB-, -EX-, -MD-, (J)",
+      "cancel": "",
       "move_property": "",
       "cost": "",
       "attribute": "",
-      "startup": "5",
-      "active": "2",
-      "recovery": "12",
-      "overall": "18",
-      "advantage": "-2",
+      "startup": "",
+      "active": "",
+      "recovery": "",
+      "overall": "",
+      "advantage": "",
       "invulnerability": "",
-      "notes": "5 frame low"
+      "notes": ""
     }
   ]
 }

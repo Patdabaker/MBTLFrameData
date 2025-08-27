@@ -16,7 +16,7 @@
       "overall": "18",
       "advantage": "-2",
       "invulnerability": "",
-      "notes": "5 frame jab"
+      "notes": ""
     },
     {
       "name": "5B",
@@ -33,13 +33,13 @@
       "overall": "29",
       "advantage": "-6",
       "invulnerability": "",
-      "notes": "Advancing blockstring tool"
+      "notes": ""
     },
     {
       "name": "5[B]",
       "input": "5[B]",
       "damage": "750",
-      "guard": "H",
+      "guard": "",
       "cancel": "N, SP, CH, EX, MD, (J)",
       "move_property": "",
       "cost": "",
@@ -50,7 +50,7 @@
       "overall": "56",
       "advantage": "-11",
       "invulnerability": "Clash 16-28",
-      "notes": "Advancing blockstring tool"
+      "notes": ""
     },
     {
       "name": "5C",
@@ -67,7 +67,7 @@
       "overall": "33",
       "advantage": "-7",
       "invulnerability": "",
-      "notes": "Advancing blockstring tool"
+      "notes": ""
     },
     {
       "name": "5[C]",
@@ -82,9 +82,9 @@
       "active": "4",
       "recovery": "29",
       "overall": "67",
-      "advantage": "+15~+33\n+21",
+      "advantage": "15~+33\\n+21",
       "invulnerability": "Clash 20-34",
-      "notes": "Advancing blockstring tool"
+      "notes": ""
     }
   ]
 }

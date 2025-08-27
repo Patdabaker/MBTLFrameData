@@ -5,7 +5,7 @@
     <div class="movedata-flex-image-container">
         <div>
             <div>
-                <big>{{ move.name|replace('\n', '<br>')|safe }}</big>
+                <big>{{ move.name|replace('\\n', '<br>')|safe }}</big>
             </div>
             <div>
                 <a href="" class="image" title="{{ move.name|replace('\n', '<br>')|safe }}"></a>
@@ -26,12 +26,12 @@
                 <th>Attribute</th>
             </tr>
             <tr>
-                <td>{{ move.damage|replace('\n', '<br>')|safe }}</td>
-                <td>{{ move.guard|replace('\n', '<br>')|safe }}</td>
-                <td>{{ move.cancel|replace('\n', '<br>')|safe }}</td>
-                <td>{{ move.move_property|replace('\n', '<br>')|safe }}</td>
-                <td>{{ move.cost|replace('\n', '<br>')|safe }}</td>
-                <td>{{ move.attribute|replace('\n', '<br>')|safe }}</td>
+                <td>{{ move.damage|replace('\\n', '<br>')|safe }}</td>
+                <td>{{ move.guard|replace('\\n', '<br>')|safe }}</td>
+                <td>{{ move.cancel|replace('\\n', '<br>')|safe }}</td>
+                <td>{{ move.move_property|replace('\\n', '<br>')|safe }}</td>
+                <td>{{ move.cost|replace('\\n', '<br>')|safe }}</td>
+                <td>{{ move.attribute|replace('\\n', '<br>')|safe }}</td>
             </tr>    
             <tr>    
                 <th>First Active</th>
@@ -42,12 +42,12 @@
                 <th>Invul</th>
             </tr>
             <tr>
-                <td>{{ move.startup|replace('\n', '<br>')|safe }}</td>
-                <td>{{ move.active|replace('\n', '<br>')|safe }}</td>
-                <td>{{ move.recovery|replace('\n', '<br>')|safe }}</td>
-                <td>{{ move.overall|replace('\n', '<br>')|safe }}</td>
-                <td>{{ move.advantage|replace('\n', '<br>')|safe }}</td>
-                <td>{{ move.invulnerability|replace('\n', '<br>')|safe }}</td>
+                <td>{{ move.startup|replace('\\n', '<br>')|safe }}</td>
+                <td>{{ move.active|replace('\\n', '<br>')|safe }}</td>
+                <td>{{ move.recovery|replace('\\n', '<br>')|safe }}</td>
+                <td>{{ move.overall|replace('\\n', '<br>')|safe }}</td>
+                <td>{{ move.advantage|replace('\\n', '<br>')|safe }}</td>
+                <td>{{ move.invulnerability|replace('\\n', '<br>')|safe }}</td>
             </tr>
             </table>
         </div>

@@ -11,7 +11,7 @@ A web app for managing character matchup notes for Melty Blood: Type Lumina. Tra
 - Responsive UI: Clean interface using Flask templates and CSS.
 
 ## Live Demo
-Deployed on Heroku
+[Deployed on Heroku](https://mbtlnotetakingapp-7d6abf9393e8.herokuapp.com/)
 
 ## Getting Started (Local)
 1. Clone the repository:

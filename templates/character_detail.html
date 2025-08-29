@@ -7,6 +7,9 @@
 {% block body %}
 <div>
     <h1 style="text-align: center">{{ character.name }} - Move List</h1>
+    <div class="image">
+        <img src="{{ url_for('static', filename='images/characters/' + character.name.split(' ')[0].lower() + '.png') }}" alt="{{ character.name }}">
+    </div>
     <p>For more information, go to this character's <a href="https://wiki.gbl.gg/w/Melty_Blood/MBTL/{{ character.name|replace(' ', '_')|safe}}" target="_blank">wiki.</a></p>
     {% include 'move_table.html' %}
 

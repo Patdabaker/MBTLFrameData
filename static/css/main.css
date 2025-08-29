@@ -188,3 +188,35 @@ h2 {
   justify-content: center;
   align-content: center;
 }
+.image {
+  display: flex;
+  justify-content: center;
+  align-content: center;
+}
+.char-images {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 20px 0;
+}
+
+.char-img {
+  text-align: center;
+  width: 45%;
+}
+
+.char-img img {
+  height: auto;
+  display: block;
+  margin: 0 auto;
+}
+.centered {
+  list-style: none;
+  padding: 0;
+  text-align: center;
+}
+
+.centered li {
+  display: inline-block;
+  margin: 0 10px;
+}

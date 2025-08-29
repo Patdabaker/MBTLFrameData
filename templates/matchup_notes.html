@@ -36,7 +36,24 @@
     <!-- Development Purposes Reset Button -->
     <a href="{{ url_for('matchup_notes') }}">Reset</a>
 </form>
+{% if my_id and opp_id %}
+<div class="movedata-flex-image-container">
+    <div class="char-images">
+        {% if my_char %}
+            <div class="char-img left">
+                <img src="{{ url_for('static', filename='images/characters/' + my_char.name.split(' ')[0]|lower + '.png') }}" alt="{{ my_char.name }}">
+            </div>
+        {% endif %}
 
+        {% if opp_char %}
+            <div class="char-img right">
+                <img src="{{ url_for('static', filename='images/characters/' + opp_char.name.split(' ')[0]|lower + '.png') }}" alt="{{ opp_char.name }}">
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endif %}
+<br>
 <div>
     {% if my_id and opp_id %}
     <div class="general-notes">

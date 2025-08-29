@@ -1,4 +1,4 @@
-# MBTL Frame Data Project
+# MBTL Matchup Note Taking App
 
 A web app for managing character matchup notes for Melty Blood: Type Lumina. Track general and matchup-specific notes for each character, filter moves, and quickly reference information from a spreadsheet-based workflow.
 
